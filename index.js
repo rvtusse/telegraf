@@ -1,6 +1,6 @@
 var admin = require('firebase-admin')
 var express = require('express');
-
+var axios = require('axios')
 var serviceAccount = require("./key.json");
 
 admin.initializeApp({
@@ -22,14 +22,28 @@ var bot = bb({
 
 })
 
+//greetings 
 
+bot.texts({
+    hello: {
+      world: {
+        friend: 'Hello, <%=name%>!'
+      }
+    }
+  });
+  
+  bot.command('hey').invoke(function (ctx) {
+    ctx.data.name = ctx.meta.user.first_name;
+    ctx.sendMessage('hello.world.friend');
+    return ctx.go('hello')
+  });
 
 
 //Registration
 
 
 bot.command('hello').invoke(function (ctx) {
-    return ctx.sendMessage('Hi welcome , may you please enter your number?' );
+    return ctx.sendMessage('welcome , may you please enter your number?' );
 }).answer(function (ctx) {
 
     // Sets user answer to session.number
@@ -83,23 +97,43 @@ bot.command('hi')
 
         console.log(ctx.data.memory);
 
-        addUserIntent(ctx.session.number, ctx.session.memory);
+        
+        addUserIntent(ctx);
+        
+        //readToDoItem("-LSPQUWLG7sWtrGG15it");
         return ctx.sendMessage('Thanks, your intent has been captured');
+        
     })
+
 
 
 
 
 // store users number and intent
 
-function addUserIntent(userId, userIntent) {
+function addUserIntent(ctx) {
+        let userData = {
+            
+            userData: ctx.session.memory
+        }
+        
 
-    
+        //posting data to the processor endpoint
+        axios.post('http://325a0077.ngrok.io/proccessModule/sendTranslator', userData)
+         .then(function (response) {
+           console.log(response.data);
+ 
+         })
+         .catch(function (error) {
+ 
+         });
+ 
+    // Add a new 'users' item
     var itemsRef = ref.child("users intent ");
     var newItemRef = itemsRef.push();
     newItemRef.set({
-        "msidn": userId,
-        "user Intent": userIntent,
+        "msidn": ctx.meta.user.id,
+        "user Intent": ctx.session.memory,
         "intent Created Time": new Date().toString()
     });
 
@@ -108,15 +142,15 @@ function addUserIntent(userId, userIntent) {
     return itemId;
 }
 
+  //
 
 
 
+//   function userData(userIntent){
 
-
-
-
-
-
-
-
-
+//     let userIntent = ctx.session.memory
+//     axios.post('http://9147a1c3.ngrok.io', userIntent)
+//     .then(function(response){
+//         console.log(response)
+//     })
+// }
