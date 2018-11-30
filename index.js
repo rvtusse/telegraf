@@ -22,28 +22,67 @@ var bot = bb({
 
 })
 
+//confirmation prompt message
+
+bot.command('Confirmation')
+.invoke(function (ctx) {
+  return ctx.sendMessage('Would you like to do something else?')
+})
+.keyboard([
+  [{'Yes': {go: 'yes'}}],
+  [{'No': {go: 'bye'}}]
+])
+.answer(function (ctx) {
+  ctx.data.answer = ctx.answer;
+  return ctx.sendMessage('Your answer is <%=answer%>');
+});
+
+//bye commmand (closing a sessiom)
+
+bot.command('bye').invoke(function (ctx) {
+    return ctx.sendMessage('Bye ' + ctx.meta.user.first_name);
+  });
+
+//Yes command (Existing user keyboard)
+bot.command('yes')
+.invoke(function (ctx) {
+    return ctx.sendMessage('These are your options')
+})
+.keyboard ([
+    [{'saved intent':{value:'ctx.session.number'}}],
+    [{'else': {go: 'hi'}}]
+])
+.answer(function (ctx) {
+    ctx.data.answer = ctx.answer;
+    //return ctx.sendMessage('Your answer is <%=answer%>');
+  });
+
+
+
+  
+
 //greetings 
 
 bot.texts({
     hello: {
-      world: {
-        friend: 'Hello, <%=name%>!'
-      }
+        world: {
+            friend: 'Hello, <%=name%>!'
+        }
     }
-  });
-  
-  bot.command('hey').invoke(function (ctx) {
+});
+
+bot.command('hey').invoke(function (ctx) {
     ctx.data.name = ctx.meta.user.first_name;
     ctx.sendMessage('hello.world.friend');
     return ctx.go('hello')
-  });
+});
 
 
 //Registration
 
 
 bot.command('hello').invoke(function (ctx) {
-    return ctx.sendMessage('welcome , may you please enter your number?' );
+    return ctx.sendMessage('welcome , may you please enter your number?');
 }).answer(function (ctx) {
 
     // Sets user answer to session.number
@@ -53,9 +92,12 @@ bot.command('hello').invoke(function (ctx) {
     console.log(ctx.meta.user.id)
 
     addUserdetails(ctx.session.number, ctx.meta.user.id, ctx.meta.user.first_name, ctx.meta.user.last_name); //calling function addUserdetails
-    
-    return ctx.go('hi')
-});
+    return ctx.sendMessage('Thanks, your number has been saved');
+})
+.answer(function (ctx) {
+    return ctx.go('hi');
+  });
+
 
 
 
@@ -65,7 +107,7 @@ function addUserdetails(userId, name, firstName, lastName) {
 
 
     // Add a new user
-    var itemsRef = ref.child("user details");
+    var itemsRef = ref.child("userDetails");
     var newItemRef = itemsRef.push();
     newItemRef.set({
         "msidn": userId,
@@ -81,13 +123,11 @@ function addUserdetails(userId, name, firstName, lastName) {
 
 
 
-
-
 //memory session (storing user Intent)
 
 bot.command('hi')
     .invoke(function (ctx) {
-        return ctx.sendMessage('Hey! teach me your intent ?');
+        return ctx.sendMessage('Please teach me your intent ?');
     })
     .answer(function (ctx) {
         ctx.session.memory = ctx.session.memory || '';
@@ -97,13 +137,14 @@ bot.command('hi')
 
         console.log(ctx.data.memory);
 
-        
+
         addUserIntent(ctx);
-        
-        //readToDoItem("-LSPQUWLG7sWtrGG15it");
+
         return ctx.sendMessage('Thanks, your intent has been captured');
-        
     })
+    .answer(function (ctx) {
+        return ctx.go('Confirmation');
+      });
 
 
 
@@ -112,24 +153,24 @@ bot.command('hi')
 // store users number and intent
 
 function addUserIntent(ctx) {
-        let userData = {
-            
-            userData: ctx.session.memory
-        }
-        
+    let userData = {
 
-        //posting data to the processor endpoint
-        axios.post('http://325a0077.ngrok.io/proccessModule/sendTranslator', userData)
-         .then(function (response) {
-           console.log(response.data);
- 
-         })
-         .catch(function (error) {
- 
-         });
- 
+        userData: ctx.session.memory
+    }
+
+
+    //posting data to the processor endpoint
+    axios.post('http://62e32181.ngrok.io/proccessModule/sendTranslator', userData)
+        .then(function (response) {
+            console.log(response.data);
+
+        })
+        .catch(function (error) {
+
+        });
+
     // Add a new 'users' item
-    var itemsRef = ref.child("users intent ");
+    var itemsRef = ref.child("userIntent ");
     var newItemRef = itemsRef.push();
     newItemRef.set({
         "msidn": ctx.meta.user.id,
@@ -142,15 +183,5 @@ function addUserIntent(ctx) {
     return itemId;
 }
 
-  //
 
 
-
-//   function userData(userIntent){
-
-//     let userIntent = ctx.session.memory
-//     axios.post('http://9147a1c3.ngrok.io', userIntent)
-//     .then(function(response){
-//         console.log(response)
-//     })
-// }
