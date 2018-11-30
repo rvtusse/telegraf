@@ -1,6 +1,9 @@
 var admin = require('firebase-admin')
+//var functions = require('firebase-functions')
 var express = require('express');
 var axios = require('axios')
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var xhr = new XMLHttpRequest();
 var serviceAccount = require("./key.json");
 
 admin.initializeApp({
@@ -25,41 +28,71 @@ var bot = bb({
 //confirmation prompt message
 
 bot.command('Confirmation')
-.invoke(function (ctx) {
-  return ctx.sendMessage('Would you like to do something else?')
-})
-.keyboard([
-  [{'Yes': {go: 'yes'}}],
-  [{'No': {go: 'bye'}}]
-])
-.answer(function (ctx) {
-  ctx.data.answer = ctx.answer;
-  return ctx.sendMessage('Your answer is <%=answer%>');
-});
+    .invoke(function (ctx) {
+        return ctx.sendMessage('Would you like to do something else?')
+    })
+    .keyboard([
+        [{ 'Yes': { go: 'yes' } }],
+        [{ 'No': { go: 'bye' } }]
+    ])
+    .answer(function (ctx) {
+        ctx.data.answer = ctx.answer;
+        return ctx.sendMessage('Your answer is <%=answer%>');
+    });
 
 //bye commmand (closing a sessiom)
 
 bot.command('bye').invoke(function (ctx) {
     return ctx.sendMessage('Bye ' + ctx.meta.user.first_name);
-  });
+});
 
 //Yes command (Existing user keyboard)
 bot.command('yes')
-.invoke(function (ctx) {
-    return ctx.sendMessage('These are your options')
+    .invoke(function (ctx) {
+        return ctx.sendMessage('These are your options')
+    })
+    .keyboard([
+        [{ 'saved intent': { go: 'intent' } }],
+        [{ 'New intent': { go: 'hi' } }]
+    ])
+    .answer(function (ctx) {
+        ctx.data.answer = ctx.answer;
+        //return ctx.sendMessage('Your answer is <%=answer%>');
+    });
+
+
+//keyboard function
+
+let defaultKeyboard = null
+
+function startingKeyboard(menu) {
+    defaultKeyboard = menu
+    console.log('This is the keyboard function')
+    bot.keyboard(defaultKeyboard)
+
+}
+
+// get stored intent from processor, 'intent' command(retrieve existing user stored intent)
+
+
+bot.command('intent').invoke(function (ctx) {
+    return axios.get('http://0da912ca.ngrok.io/processor/v1/actionRequest')
+        .then((response) => {
+
+
+            startingKeyboard(response.data)
+            console.log('i am here')
+            console.log(response.data)
+
+        })
 })
-.keyboard ([
-    [{'saved intent':{value:'ctx.session.number'}}],
-    [{'else': {go: 'hi'}}]
-])
-.answer(function (ctx) {
-    ctx.data.answer = ctx.answer;
-    //return ctx.sendMessage('Your answer is <%=answer%>');
-  });
 
 
 
-  
+
+
+
+
 
 //greetings 
 
@@ -82,7 +115,7 @@ bot.command('hey').invoke(function (ctx) {
 
 
 bot.command('hello').invoke(function (ctx) {
-    return ctx.sendMessage('welcome , may you please enter your number?');
+    return ctx.sendMessage('May you please enter your number?');
 }).answer(function (ctx) {
 
     // Sets user answer to session.number
@@ -94,9 +127,9 @@ bot.command('hello').invoke(function (ctx) {
     addUserdetails(ctx.session.number, ctx.meta.user.id, ctx.meta.user.first_name, ctx.meta.user.last_name); //calling function addUserdetails
     return ctx.sendMessage('Thanks, your number has been saved');
 })
-.answer(function (ctx) {
-    return ctx.go('hi');
-  });
+    .answer(function (ctx) {
+        return ctx.go('hi');
+    });
 
 
 
@@ -144,7 +177,7 @@ bot.command('hi')
     })
     .answer(function (ctx) {
         return ctx.go('Confirmation');
-      });
+    });
 
 
 
@@ -160,7 +193,7 @@ function addUserIntent(ctx) {
 
 
     //posting data to the processor endpoint
-    axios.post('http://62e32181.ngrok.io/proccessModule/sendTranslator', userData)
+    axios.post('http://0da912ca.ngrok.io/processor/v1/actionRequest', userData)
         .then(function (response) {
             console.log(response.data);
 
@@ -185,3 +218,34 @@ function addUserIntent(ctx) {
 
 
 
+//('start') determine if the user is new or old
+
+
+        
+
+
+       // return ctx.sendMessage('Please teach me your intent ?');
+    
+
+// function userstatus(name, firstName ) {
+
+//     // Write and then read back a JavaScript object from the Database.
+// ref.set({ name: ctx.meta.user.id, firstName: ctx.meta.user.first_name })
+// .then(function() {
+//  return ref.once("value");
+// })
+// .then(function(snapshot) {
+//   var data = snapshot.val();
+//   // data is { "name": "Ada", "age": 36 }
+//   // data.name === "Ada"
+//   // data.age === 36
+// });
+
+// userstatus
+
+    
+
+
+  
+
+  
