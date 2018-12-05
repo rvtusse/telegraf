@@ -59,24 +59,8 @@ bot.command('getintent').invoke(function (ctx) {
 
 
 
-//greetings 
-
-bot.texts({
-    hello: {
-        world: {
-            friend: 'Yello, <%=name%>!'
-        }
-    }
-});
 
 
-
-// bot.command('start').invoke(function (ctx) {
-//     ctx.data.name = ctx.meta.user.first_name;
-//     ctx.sendMessage('hello.world.friend');
-//     return ctx.go('Registration')
-
-// });
 
 //Registration
 
@@ -95,38 +79,27 @@ bot.command('start').invoke(function (ctx) {
         }
     };
  
-    bot.api.sendMessage(ctx.meta.chat.id , " Y'ello " + ctx.meta.user.first_name + " May you please register with your phone number", option)
-     //calling function addUserdetails  
-
-
-    
+    //bot.api.sendMessage(ctx.meta.chat.id , " Y'ello " + ctx.meta.user.first_name + "," + " may you please register with your phone number", option)
+  return ctx.sendMessage("Y'ello " + ctx.meta.user.first_name + "," + " may you please register with your phone number", option )
 })
-    .answer(function (ctx) {
-        console.log(ctx.message.contact.phone_number)
-        // addUserdetails(ctx.answer, ctx.meta.user.id, ctx.meta.user.first_name, ctx.meta.user.last_name);
-        return ctx.go('intent');
+.answer(function (ctx) {
+
+  return ctx.go('intent')
+})
+   //chat action typing
+
+describe('#sendChatAction', function () {
+    it('should send a chat action', function (done) {
+      var bot = new Telegram(TOKEN);
+      var action = "typing";
+      bot.api.sendChatAction(USERID, action).then(function (resp) {
+        resp.should.be.exactly(true);
+        done();
+      });
     });
+  });
+   
 
-    
-//store users number and Telegram ID in FIRESTORE
-
-function addUserdetails(userId, name, firstName, lastName) {
-
-
-    // Add a new user
-    var itemsRef = ref.child("userDetails");
-    var newItemRef = itemsRef.push();
-    newItemRef.set({
-        "msidn": userId,
-        "Telegram_ID": name,
-        "First_name": firstName,
-        "Last_name": lastName
-    });
-
-    var itemId = newItemRef.key;
-    console.log("A new TODO item with ID " + itemId + " is created.");
-    return itemId;
-}
 
 
 
@@ -171,7 +144,7 @@ bot.command('Confirmation')
     //Yes command (Existing user keyboard)
     bot.command('default')
     .invoke(function (ctx) {
-        return ctx.sendMessage('Welcome back! what would you like to do now?')
+        return ctx.sendMessage('Welcome back! ' + ctx.meta.user.first_name +',' + ' what would you like to do now?')
     })
     .keyboard([
         [{ 'saved intent': { go: 'getintent' } }],
@@ -248,6 +221,4 @@ function addUserIntent(ctx) {
     // console.log("userID and intent " + itemId + " is successfully created.");
     // return itemId;
 }
-
-
 
