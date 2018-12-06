@@ -3,23 +3,44 @@ var express = require('express');
 var axios = require('axios')
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var xhr = new XMLHttpRequest();
-var serviceAccount = require("./key.json");
+//var serviceAccount = require("./key.json");
 var firebase = require('firebase/app');
+var functions = require('firebase-functions');
+var firebaseHelper = require('firebase-functions-helper')
 //var _ = require('lodash');
 
 
-//Firebase
+//Firebase initialization
 
 
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "//test-756a0.firebaseio.com/"
-});
+    credential: admin.credential.applicationDefault()
+ });
+ const db = admin.firestore()
+ 
+ // creating my collection
+
+ const userDetailsCollections = 'userDetails';
+ const userIntentsCollections = 'userIntents';
+
+
+
+ //add userDetails database
+
+ // Add a new document with a generated id.
+var addDoc = db.collection('userDetails').add({
+    name: 'Tokyo',
+    country: 'Japan'
+  }).then(ref => {
+    console.log('Added document with ID: ', ref.id);
+  });
+
+
 
 //get a database reference to the database
 
-var db = admin.database();
-var ref = db.ref("/");
+// var db = admin.database();
+// var ref = db.ref("/");
 
 
 var bb = require('bot-brother')
@@ -29,6 +50,20 @@ var bot = bb({
     polling: { interval: 10, timeout: false }
 
 })
+
+//chat action typing
+
+bot.command('typing')
+    .invoke(function(ctx) {
+      var USERID = ctx.meta.user.id
+      var action = "typing";
+      bot.api.sendChatAction(USERID, action).then(function (resp) {
+       
+       return ctx.go('getintent')
+      })
+   
+    });
+
 
 
 // //keyboard function
@@ -79,27 +114,13 @@ bot.command('start').invoke(function (ctx) {
         }
     };
  
-    //bot.api.sendMessage(ctx.meta.chat.id , " Y'ello " + ctx.meta.user.first_name + "," + " may you please register with your phone number", option)
   return ctx.sendMessage("Y'ello " + ctx.meta.user.first_name + "," + " may you please register with your phone number", option )
 })
 .answer(function (ctx) {
 
   return ctx.go('intent')
 })
-   //chat action typing
-
-describe('#sendChatAction', function () {
-    it('should send a chat action', function (done) {
-      var bot = new Telegram(TOKEN);
-      var action = "typing";
-      bot.api.sendChatAction(USERID, action).then(function (resp) {
-        resp.should.be.exactly(true);
-        done();
-      });
-    });
-  });
    
-
 
 
 
@@ -115,7 +136,7 @@ bot.command('intent')
         ctx.data.memory = ctx.session.memory;
 
 
-        console.log(ctx.data.memory);
+        //console.log(ctx.message.contact.phone_number);
 
 
         // addUserIntent(ctx);
@@ -144,29 +165,47 @@ bot.command('Confirmation')
     //Yes command (Existing user keyboard)
     bot.command('default')
     .invoke(function (ctx) {
-        return ctx.sendMessage('Welcome back! ' + ctx.meta.user.first_name +',' + ' what would you like to do now?')
+        return ctx.sendMessage('Yoh! ' + ctx.meta.user.first_name +',' + ' what would you like to do now?')
     })
     .keyboard([
-        [{ 'saved intent': { go: 'getintent' } }],
+        [{ 'saved intent': { go: 'typingt' } }],
         [{ 'New intent': { go: 'intent' } }],
-        [{ 'Chit-chat': {go: 'promos' }}]
+        [{ 'Chit-chat': {go: 'typepromos' }}]
     ])
     .answer(function (ctx) {
         ctx.data.answer = ctx.answer;
       
     });
 
-    //promo  (getting promotional messages from the processor)
+
+
+//chat action typing 1 ONE 
+   
+bot.command('typepromos')
+.invoke(function(ctx) {
+  var USERID = ctx.meta.user.id
+  var action = "typing";
+  bot.api.sendChatAction(USERID, action).then(function (resp) {
+   
+   return ctx.go('promos')
+  })
+
+});
+
+
+  //promo  (getting promotional messages from the processor)
+
+
 
     bot.command('promos')
     .invoke(function(ctx) {
-        return axios.get('http://7a0873c4.ngrok.io/processor/v1/promotions')
+        return axios.get('http://ec100a85.ngrok.io/processor/v1/promotions')
         .then((response) => {
            
 
             console.log('i am here')
             console.log(response.data)
-            ctx.sendMessage(ctx.meta.user.first_name + '  did you know about this ?')
+            //ctx.sendMessage(ctx.meta.user.first_name + '  did you know about this ?')
             ctx.sendMessage(response.data.advert)
             return ctx.go('chitchat')
         })
@@ -174,10 +213,26 @@ bot.command('Confirmation')
     })
 
 
+
+// //chat action typing 2 TWo
+   
+// bot.command('typechitchat')
+// .invoke(function(ctx) {
+//   var USERID = ctx.meta.user.id
+//   var action = "typing";
+//   bot.api.sendChatAction(USERID, action).then(function (resp) {
+   
+//    return ctx.go('chitchat')
+//   })
+
+// });
+
+
     //chitchat command 
+
     bot.command('chitchat')
     .invoke((ctx)=>{
-        return ctx.sendMessage('Awe ' + ctx.meta.user.first_name)
+        return ctx.sendMessage('Sawubona ' + ctx.meta.user.first_name)
     })
 
 
