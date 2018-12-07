@@ -19,6 +19,41 @@ var bot = bb({
 
 })
 
+
+
+//if statement deciding if user exist in the database or not
+
+bot.command('start')
+.invoke(function(ctx){
+
+   console.log('Sent to John')
+   axios.get('http://cba26d6c.ngrok.io/processor/v1/userDetails/ '+ ctx.meta.user.id)
+   .then(function(response){
+       console.log(response.data)
+       if(response.data.exists === true){
+           ctx
+       }
+
+
+       console.log(response.data)
+   })
+   .catch(function(error){
+    ctx.sendMessage('server currently down')
+   })
+   .answer(function (ctx) {
+    return ctx.go('default')
+})
+
+})
+
+
+
+
+
+
+    
+
+
 //chat action typing
 
 bot.command('typing')
@@ -49,21 +84,28 @@ function startingKeyboard(menu) {
 
 
 bot.command('getintent').invoke(function (ctx) {
-    return axios.get('http://516d0ec3.ngrok.io/processor/v1/userIntents/' + ctx.message.contact.phone_number)
+    return axios.get('http://cba26d6c.ngrok.io/processor/v1/userIntents/' + ctx.message.contact.phone_number)
         .then((response) => {
 
-            //startingKeyboard(response.data)
+            startingKeyboard(response.data)
             console.log('i am here')
             console.log(response.data)
 
         })
+        .catch(function(error){
+            ctx.sendMessage('server currently down')
+            return ctx.go('default')
+           })
+        //    .answer(function (ctx) {
+          
+        // })
 })
 
 
 //Registration
 
 
-bot.command('start').invoke(function (ctx) {
+bot.command('number').invoke(function (ctx) {
     var option = {
         "parse_mode": "Markdown",
         "reply_markup": {
@@ -75,38 +117,15 @@ bot.command('start').invoke(function (ctx) {
 
         }
     };
-
+       addUserDetails(ctx)
     return ctx.sendMessage("Y'ello " + ctx.meta.user.first_name + "," + " may you please register with your phone number", option)
 })
 //calling addUserDetails
-addUserDetails(ctx)
+
 
     .answer(function (ctx) {
         return ctx.go('intent')
     })
-
-
-// store users number 
-
-function addUserDetails(ctx) {
-    let userData = {
-
-        userData: ctx.message.contact.phone_number
-    }
-
-
-    //posting data to the processor endpoint
-
-    axios.post('', userData)
-        .then(function (response) {
-            console.log(response.data);
-
-        })
-        .catch(function (error) {
-
-        });
-}
-
 
 
 
@@ -124,33 +143,14 @@ bot.command('intent')
 
     //calling addUserIntent
         addUserIntent(ctx);
-
+        addUserDetails(ctx)
         return ctx.sendMessage('Thanks, your request is being processed');
     })
     .answer(function (ctx) {
         return ctx.go('Confirmation');
     });
 
-// store users intent
 
-function addUserIntent(ctx) {
-    let userIntents = {
-
-        userIntents: ctx.session.memory
-    }
-
-
-    //posting data to the processor endpoint
-
-    axios.post('', userIntents)
-        .then(function (response) {
-            console.log(response.data);
-
-        })
-        .catch(function (error) {
-
-        });
-}
 
 //confirmation prompt message
 
@@ -201,7 +201,7 @@ bot.command('typepromos')
 
 bot.command('promos')
     .invoke(function (ctx) {
-        return axios.get('http://ec100a85.ngrok.io/processor/v1/promotions')
+        return axios.get('http://cba26d6c.ngrok.io/processor/v1/promotions')
             .then((response) => {
 
 
@@ -211,6 +211,13 @@ bot.command('promos')
                 ctx.sendMessage(response.data.advert)
                 return ctx.go('chitchat')
             })
+            .catch(function(error){
+                ctx.sendMessage('server currently down')
+                return ctx.go('default')
+               })
+            //    .answer(function (ctx) {
+              
+            // })
 
     })
 
@@ -241,14 +248,49 @@ function addUserIntent(ctx) {
 
 
     //posting data to the processor endpoint
-
-    axios.post('http://0da912ca.ngrok.io/processor/v1/actionRequest', userData)
+console.log('posting intents')
+    axios.post('http://cba26d6c.ngrok.io/processor/v1/saveUserIntents/', userData)
         .then(function (response) {
             console.log(response.data);
 
         })
-        .catch(function (error) {
-
-        });
+        .catch(function(error){
+            ctx.sendMessage('server currently down')
+            return ctx.go('default')
+           })
+        //    .answer(function (ctx) {
+            
+        // })
 }
 
+
+
+
+// store user details (phone number, telegram id, firstname, lastname)
+
+function addUserDetails(ctx) {
+    let userID = {
+    //msdin: ctx.message.contact.phone_number,
+    telegram_id: ctx.meta.user.id,
+    first_name: ctx.meta.user.first_name,
+    last_name: ctx.meta.user.last_name
+
+    
+    }
+
+
+    //posting data to the processor endpoint
+
+    axios.post('http://f7c5c1a7.ngrok.io/processor/v1/saveUserDetails', userID)
+        .then(function (response) {
+            console.log(response.data);
+
+        })
+        .catch(function(error){
+            ctx.sendMessage('server currently down')
+            return ctx.go('default')
+           })
+          // .answer(function (ctx) {
+         
+       // })
+}
