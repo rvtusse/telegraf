@@ -19,39 +19,35 @@ var bot = bb({
 
 })
 
-
-
-//if statement deciding if user exist in the database or not
+//if statement
 
 bot.command('start')
-.invoke(function(ctx){
+.invoke((ctx) => {
+    axios.get('http://539c457a.ngrok.io/processor/v1/userDetails/'+ ctx.meta.user.id)
+    .then(response => {
+        console.log(response.data)
+        if(response.data.exists ===true){
+            
+            return ctx.go('default')
+            
+        }
+        else{
+            
+                return ctx.go('number')
+            
+        }
+    })
+    .catch(function(error){
+        // ctx.sendMessage('server currently down')
+        // return ctx.go('default')
+    })
+    // .catch(function(error){
+    //     //ctx.sendMessage('server currently down')
+    //    })
+     
 
-   console.log('Sent to John')
-   axios.get('http://cba26d6c.ngrok.io/processor/v1/userDetails/ '+ ctx.meta.user.id)
-   .then(function(response){
-       console.log(response.data)
-       if(response.data.exists === true){
-           ctx
-       }
-
-
-       console.log(response.data)
-   })
-   .catch(function(error){
-    ctx.sendMessage('server currently down')
-   })
-   .answer(function (ctx) {
-    return ctx.go('default')
 })
 
-})
-
-
-
-
-
-
-    
 
 
 //chat action typing
@@ -84,7 +80,7 @@ function startingKeyboard(menu) {
 
 
 bot.command('getintent').invoke(function (ctx) {
-    return axios.get('http://cba26d6c.ngrok.io/processor/v1/userIntents/' + ctx.message.contact.phone_number)
+    return axios.get('http://539c457a.ngrok.io/processor/v1/userIntents/' + ctx.message.contact.phone_number)
         .then((response) => {
 
             startingKeyboard(response.data)
@@ -105,7 +101,48 @@ bot.command('getintent').invoke(function (ctx) {
 //Registration
 
 
-bot.command('number').invoke(function (ctx) {
+// bot.command('number').invoke(function (ctx) {
+//     var option = {
+//         "parse_mode": "Markdown",
+//         "reply_markup": {
+//             "one_time_keyboard": true,
+//             "keyboard": [[{
+//                 text: "My phone number",
+//                 request_contact: true
+//             }], ["Cancel"]]
+
+//         }
+        
+
+//     };
+//     console.log('invoke phase')
+   
+//     //  ctx.sendMessage("may i have your number to register" , option)
+
+//     return ctx.sendMessage("may i have your number to register", option) 
+
+   
+     
+//     // bot.api.sendMessage(msg.chat.id, "How can we contact you?", option).then(() => {
+//     //     bot.api.on("contact",(msg)=>{
+            
+//     //         bot.api.sendMessage(msg.chat.id,
+//     //                         util.format('Thank you %s with phone %s!', msg.contact.first_name, msg.contact.phone_number),
+//     //                         option)
+//     //         })
+//     // })
+// }).answer(function (ctx) {
+//     console.log('answer phase')
+//     addUserDetails(ctx)
+//     return ctx.go('intent')
+// })
+
+
+
+//calling addUserDetails
+bot.command('number')
+.invoke(function (ctx) {
+    console.log('invoke')
     var option = {
         "parse_mode": "Markdown",
         "reply_markup": {
@@ -116,24 +153,29 @@ bot.command('number').invoke(function (ctx) {
             }], ["Cancel"]]
 
         }
+        
+
     };
-       addUserDetails(ctx)
-    return ctx.sendMessage("Y'ello " + ctx.meta.user.first_name + "," + " may you please register with your phone number", option)
+  return ctx.sendMessage("Y'ello "+ ctx.meta.user.first_name +  " may i have your number to register", option);
 })
-//calling addUserDetails
+.answer(function (ctx) {
+//return  ctx.sendMessage('thanks')
+console.log('answer')
+console.log('answer phase')
+// addUserDetails(ctx)
+     return ctx.go('intent')
+})
 
 
-    .answer(function (ctx) {
-        return ctx.go('intent')
-    })
-
+   
 
 
 //memory session (storing user Intent)
 
 bot.command('intent')
     .invoke(function (ctx) {
-        return ctx.sendMessage('What would you like to do today?');
+        return ctx.sendMessage("Number captured, "
+        + "What would you like to do today");
     })
     .answer(function (ctx) {
         ctx.session.memory = ctx.session.memory || '';
@@ -201,7 +243,7 @@ bot.command('typepromos')
 
 bot.command('promos')
     .invoke(function (ctx) {
-        return axios.get('http://cba26d6c.ngrok.io/processor/v1/promotions')
+        return axios.get('http://539c457a.ngrok.io/processor/v1/promotions')
             .then((response) => {
 
 
@@ -249,7 +291,7 @@ function addUserIntent(ctx) {
 
     //posting data to the processor endpoint
 console.log('posting intents')
-    axios.post('http://cba26d6c.ngrok.io/processor/v1/saveUserIntents/', userData)
+    axios.post('http://539c457a.ngrok.io/processor/v1/saveUserIntents/', userData)
         .then(function (response) {
             console.log(response.data);
 
@@ -281,7 +323,7 @@ function addUserDetails(ctx) {
 
     //posting data to the processor endpoint
 
-    axios.post('http://f7c5c1a7.ngrok.io/processor/v1/saveUserDetails', userID)
+    axios.post('http://539c457a.ngrok.io/processor/v1/saveUserDetails', userID)
         .then(function (response) {
             console.log(response.data);
 
