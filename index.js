@@ -18,7 +18,6 @@ var bot = bb({
     polling: { interval: 10, timeout: false }
 
 })
-
 //if statement
 
 bot.command('start')
@@ -31,8 +30,8 @@ bot.command('start')
             return ctx.go('default')
             
         }
-        else{
-            
+        else if(response.data === false){
+                
                 return ctx.go('number')
             
         }
@@ -142,6 +141,7 @@ bot.command('getintent').invoke(function (ctx) {
 //calling addUserDetails
 bot.command('number')
 .invoke(function (ctx) {
+
     console.log('invoke')
     var option = {
         "parse_mode": "Markdown",
@@ -154,21 +154,24 @@ bot.command('number')
 
         }
         
-
     };
+    
   return ctx.sendMessage("Y'ello "+ ctx.meta.user.first_name +  " may i have your number to register", option);
 })
+
 .answer(function (ctx) {
 //return  ctx.sendMessage('thanks')
 console.log('answer')
 console.log('answer phase')
 // addUserDetails(ctx)
-     return ctx.go('intent')
+
+return bot.withContext(ctx.message.contact.phone_number, function (ctx) {
+    return ctx.go('intent') 
+  });
+
+  
+
 })
-
-
-   
-
 
 //memory session (storing user Intent)
 
@@ -192,6 +195,8 @@ bot.command('intent')
         return ctx.go('Confirmation');
     });
 
+
+    //Cornelius street
 
 
 //confirmation prompt message
@@ -312,7 +317,7 @@ console.log('posting intents')
 
 function addUserDetails(ctx) {
     let userID = {
-    //msdin: ctx.message.contact.phone_number,
+    msdin: ctx.message.contact.phone_number,
     telegram_id: ctx.meta.user.id,
     first_name: ctx.meta.user.first_name,
     last_name: ctx.meta.user.last_name
