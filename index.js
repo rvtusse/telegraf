@@ -22,7 +22,7 @@ var bot = bb({
 
 bot.command('start')
 .invoke((ctx) => {
-    axios.get('http://539c457a.ngrok.io/processor/v1/userDetails/'+ ctx.meta.user.id)
+    axios.get('http://369067ff.ngrok.io/processor/v1/userDetails/'+ ctx.meta.user.id)
     .then(response => {
         console.log(response.data)
         if(response.data.exists ===true){
@@ -36,16 +36,14 @@ bot.command('start')
             
         }
     })
-    .catch(function(error){
-        // ctx.sendMessage('server currently down')
-        // return ctx.go('default')
-    })
     // .catch(function(error){
-    //     //ctx.sendMessage('server currently down')
-    //    })
+    //     ctx.sendMessage('server currently down')
+    //     return ctx.go('default')
+    })
+   
      
 
-})
+//})
 
 
 
@@ -79,7 +77,7 @@ function startingKeyboard(menu) {
 
 
 bot.command('getintent').invoke(function (ctx) {
-    return axios.get('http://539c457a.ngrok.io/processor/v1/userIntents/' + ctx.message.contact.phone_number)
+    return axios.get('http://369067ff.ngrok.io/processor/v1/userIntents/' + ctx.message.contact.phone_number)
         .then((response) => {
 
             startingKeyboard(response.data)
@@ -248,7 +246,7 @@ bot.command('typepromos')
 
 bot.command('promos')
     .invoke(function (ctx) {
-        return axios.get('http://539c457a.ngrok.io/processor/v1/promotions')
+        return axios.get('http://369067ff.ngrok.io/processor/v1/promotions')
             .then((response) => {
 
 
@@ -296,7 +294,7 @@ function addUserIntent(ctx) {
 
     //posting data to the processor endpoint
 console.log('posting intents')
-    axios.post('http://539c457a.ngrok.io/processor/v1/saveUserIntents/', userData)
+    axios.post('http://369067ff.ngrok.io/processor/v1/saveUserIntents/', userData)
         .then(function (response) {
             console.log(response.data);
 
@@ -328,7 +326,7 @@ function addUserDetails(ctx) {
 
     //posting data to the processor endpoint
 
-    axios.post('http://539c457a.ngrok.io/processor/v1/saveUserDetails', userID)
+    axios.post('http://369067ff.ngrok.io/processor/v1/saveUserDetails', userID)
         .then(function (response) {
             console.log(response.data);
 
@@ -341,3 +339,4 @@ function addUserDetails(ctx) {
          
        // })
 }
+
