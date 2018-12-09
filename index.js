@@ -14,36 +14,32 @@ var firebaseHelper = require('firebase-functions-helper')
 var bb = require('bot-brother')
 var bot = bb({
     key: '795833285:AAGBmXjnQMdNzS31jDP7eeHCDmEqpReqTF8',
-    sessionManager: bb.sessionManager.memory({ dir: '/Users/digital/datay.txt/' }),
+    sessionManager: bb.sessionManager.memory({ dir: 'Users/digital/datay.txt/' }),
     polling: { interval: 10, timeout: false }
 
 })
-//if statement
 
+//The start command is the first command that the user initiates a session with. 
+//From here, we determine whether we should onboard the user or route them to registration.
 bot.command('start')
-.invoke((ctx) => {
-    axios.get('http://369067ff.ngrok.io/processor/v1/userDetails/'+ ctx.meta.user.id)
-    .then(response => {
-        console.log(response.data)
-        if(response.data.exists ===true){
-            
-            return ctx.go('default')
-            
-        }
-        else if(response.data === false){
-                
-                return ctx.go('number')
-            
-        }
-    })
-    // .catch(function(error){
-    //     ctx.sendMessage('server currently down')
-    //     return ctx.go('default')
-    })
-   
-     
+    .invoke((ctx) => {
+        console.log(ctx.meta.user.id);
+        axios.get('http://369067ff.ngrok.io/processor/v1/userDetails/' + ctx.meta.user.id)
+            .then(response => {
+                console.log(response.data)
+                if (response.data.exists === true) {
+                    console.log("[+] The user exists, routing to the default menu.")
+                    return ctx.go('default');
+                }
+                else{
+                    console.log("[-] The user does not exist, routing to the number menu.")
+                    return ctx.go('number');
+                }
+            })
 
-//})
+    })
+
+
 
 
 
@@ -85,98 +81,62 @@ bot.command('getintent').invoke(function (ctx) {
             console.log(response.data)
 
         })
-        .catch(function(error){
+        .catch(function (error) {
             ctx.sendMessage('server currently down')
             return ctx.go('default')
-           })
-        //    .answer(function (ctx) {
-          
-        // })
+        })
+    //    .answer(function (ctx) {
+
+    // })
 })
-
-
-//Registration
-
-
-// bot.command('number').invoke(function (ctx) {
-//     var option = {
-//         "parse_mode": "Markdown",
-//         "reply_markup": {
-//             "one_time_keyboard": true,
-//             "keyboard": [[{
-//                 text: "My phone number",
-//                 request_contact: true
-//             }], ["Cancel"]]
-
-//         }
-        
-
-//     };
-//     console.log('invoke phase')
-   
-//     //  ctx.sendMessage("may i have your number to register" , option)
-
-//     return ctx.sendMessage("may i have your number to register", option) 
-
-   
-     
-//     // bot.api.sendMessage(msg.chat.id, "How can we contact you?", option).then(() => {
-//     //     bot.api.on("contact",(msg)=>{
-            
-//     //         bot.api.sendMessage(msg.chat.id,
-//     //                         util.format('Thank you %s with phone %s!', msg.contact.first_name, msg.contact.phone_number),
-//     //                         option)
-//     //         })
-//     // })
-// }).answer(function (ctx) {
-//     console.log('answer phase')
-//     addUserDetails(ctx)
-//     return ctx.go('intent')
-// })
-
 
 
 //calling addUserDetails
 bot.command('number')
-.invoke(function (ctx) {
+    .invoke(function (ctx) {
 
-    console.log('invoke')
-    var option = {
-        "parse_mode": "Markdown",
-        "reply_markup": {
-            "one_time_keyboard": true,
-            "keyboard": [[{
-                text: "My phone number",
-                request_contact: true
-            }], ["Cancel"]]
+        console.log('invoke')
+        var option = {
+            "parse_mode": "Markdown",
+            "reply_markup": {
+                "one_time_keyboard": true,
+                "keyboard": [[{
+                    text: "My phone number",
+                    request_contact: true
+                }], ["Cancel"]],
+            }
 
-        }
-        
-    };
-    
-  return ctx.sendMessage("Y'ello "+ ctx.meta.user.first_name +  " may i have your number to register", option);
-})
+        };
+        return ctx.sendMessage("Y'ello " + ctx.meta.user.first_name + " may i have your number to register", option).then(function(res, other){
+            console.log("HERHEHRHEHREHRHER\n\n\n\n\\n\n\nHHHHHH");
+            console.log(res);
+            console.log(other);
+            console.log(ctx.message.contact.phone_number);
+        });
+        console.log("fetched number");
+        return ctx.go('default');
+    })
 
-.answer(function (ctx) {
-//return  ctx.sendMessage('thanks')
-console.log('answer')
-console.log('answer phase')
-// addUserDetails(ctx)
+    .answer(function (ctx) {
+        //return  ctx.sendMessage('thanks')
+        console.log('answer')
+        console.log('answer phase')
+        // addUserDetails(ctx)
 
-return bot.withContext(ctx.message.contact.phone_number, function (ctx) {
-    return ctx.go('intent') 
-  });
+        return bot.withContext(ctx.message.contact.phone_number, function (ctx) {
+            return ctx.go('intent')
+        });
 
-  
 
-})
+
+    })
 
 //memory session (storing user Intent)
 
 bot.command('intent')
     .invoke(function (ctx) {
         return ctx.sendMessage("Number captured, "
-        + "What would you like to do today");
+            + "What would you like to do today");
     })
     .answer(function (ctx) {
         ctx.session.memory = ctx.session.memory || '';
@@ -184,7 +144,7 @@ bot.command('intent')
         ctx.data.memory = ctx.session.memory;
         //console.log(ctx.message.contact.phone_number);
 
-    //calling addUserIntent
+        //calling addUserIntent
         addUserIntent(ctx);
         addUserDetails(ctx)
         return ctx.sendMessage('Thanks, your request is being processed');
@@ -194,7 +154,7 @@ bot.command('intent')
     });
 
 
-    //Cornelius street
+//Cornelius street
 
 
 //confirmation prompt message
@@ -216,6 +176,8 @@ bot.command('Confirmation')
 
 bot.command('default')
     .invoke(function (ctx) {
+        console.log("here");
+        console.log(ctx);
         return ctx.sendMessage('Yoh! ' + ctx.meta.user.first_name + ',' + ' what would you like to do now?')
     })
     .keyboard([
@@ -256,13 +218,13 @@ bot.command('promos')
                 ctx.sendMessage(response.data.advert)
                 return ctx.go('chitchat')
             })
-            .catch(function(error){
+            .catch(function (error) {
                 ctx.sendMessage('server currently down')
                 return ctx.go('default')
-               })
-            //    .answer(function (ctx) {
-              
-            // })
+            })
+        //    .answer(function (ctx) {
+
+        // })
 
     })
 
@@ -293,50 +255,23 @@ function addUserIntent(ctx) {
 
 
     //posting data to the processor endpoint
-console.log('posting intents')
+    console.log('posting intents')
     axios.post('http://369067ff.ngrok.io/processor/v1/saveUserIntents/', userData)
         .then(function (response) {
             console.log(response.data);
 
         })
-        .catch(function(error){
+        .catch(function (error) {
             ctx.sendMessage('server currently down')
             return ctx.go('default')
-           })
-        //    .answer(function (ctx) {
-            
-        // })
+        })
+    //    .answer(function (ctx) {
+
+    // })
 }
 
 
 
 
 // store user details (phone number, telegram id, firstname, lastname)
-
-function addUserDetails(ctx) {
-    let userID = {
-    msdin: ctx.message.contact.phone_number,
-    telegram_id: ctx.meta.user.id,
-    first_name: ctx.meta.user.first_name,
-    last_name: ctx.meta.user.last_name
-
-    
-    }
-
-
-    //posting data to the processor endpoint
-
-    axios.post('http://369067ff.ngrok.io/processor/v1/saveUserDetails', userID)
-        .then(function (response) {
-            console.log(response.data);
-
-        })
-        .catch(function(error){
-            ctx.sendMessage('server currently down')
-            return ctx.go('default')
-           })
-          // .answer(function (ctx) {
-         
-       // })
-}
 
