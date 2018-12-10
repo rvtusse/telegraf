@@ -24,7 +24,7 @@ var bot = bb({
 bot.command('start')
     .invoke((ctx) => {
         console.log(ctx.meta.user.id);
-        axios.get('http://369067ff.ngrok.io/processor/v1/userDetails/' + ctx.meta.user.id)
+        axios.get('http://b9b9cbee.ngrok.io/processor/v1/userDetails/' + ctx.meta.user.id)
             .then(response => {
                 console.log(response.data)
                 if (response.data.exists === true) {

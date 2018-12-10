@@ -9,6 +9,6 @@ defaultScene.enter(function(ctx){
     ctx.reply('Yoh! ' + ctx.update.message.chat.first_name + ',' + ' what would you like to do now?');
 });
 defaultScene.leave((ctx) => ctx.reply('Bye'))
-defaultScene.on('message', (ctx) => ctx.reply('Send `hi`'))
+defaultScene.on('message', (ctx) => ctx.reply('Send `hi`'));
 
 module.exports = defaultScene;
