@@ -43,6 +43,10 @@ bot.command('start')
 
 
 
+
+
+
+
 //chat action typing
 
 bot.command('typing')
@@ -73,7 +77,7 @@ function startingKeyboard(menu) {
 
 
 bot.command('getintent').invoke(function (ctx) {
-    return axios.get('http://369067ff.ngrok.io/processor/v1/userIntents/' + ctx.message.contact.phone_number)
+    return axios.get('http://b9b9cbee.ngrok.io/processor/v1/userIntents/' + ctx.message.contact.phone_number)
         .then((response) => {
 
             startingKeyboard(response.data)
@@ -208,7 +212,7 @@ bot.command('typepromos')
 
 bot.command('promos')
     .invoke(function (ctx) {
-        return axios.get('http://369067ff.ngrok.io/processor/v1/promotions')
+        return axios.get('http://b9b9cbee.ngrok.io/processor/v1/promotions')
             .then((response) => {
 
 
