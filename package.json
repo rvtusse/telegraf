@@ -12,6 +12,7 @@
   "dependencies": {
     "admin": "^1.4.0",
     "axios": "^0.18.0",
+    "bot-brother": "^2.1.5",
     "express": "^4.16.4",
     "firebase": "^5.6.0",
     "firebase-admin": "^6.2.0",

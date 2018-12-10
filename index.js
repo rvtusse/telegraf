@@ -13,27 +13,31 @@ var firebaseHelper = require('firebase-functions-helper')
 
 var bb = require('bot-brother')
 var bot = bb({
-    key: '795833285:AAGBmXjnQMdNzS31jDP7eeHCDmEqpReqTF8',
+    key: '631921524:AAE7kmnfwl5IZyq8lviJd1lxtPlGd9vHQ8M',
     sessionManager: bb.sessionManager.memory({ dir: '/Users/digital/datay.txt/' }),
     polling: { interval: 10, timeout: false }
 
 })
+// //if statement
 
-//if statement
-
-bot.command('start')
+bot.command('number')
 .invoke((ctx) => {
-    axios.get('http://369067ff.ngrok.io/processor/v1/userDetails/'+ ctx.meta.user.id)
+    axios.get('http://b9b9cbee.ngrok.io/processor/v1/userDetails/'+ ctx.meta.user.id)
     .then(response => {
         console.log(response.data)
         if(response.data.exists ===true){
+            console.log("[+] The user exists,routing to the default menu.")
+
             
-            return ctx.go('default')
+            
+            //return ctx.go('default')
             
         }
-        else{
-            
-                return ctx.go('number')
+        else if (response.data.exists ===false) {
+                console.log("[+] The user does not exists,routing to the number menu.")
+
+                ctx.sendMessage('welcome back click on /number to go to the main menu')
+                //return ctx.go('number')
             
         }
     })
@@ -45,6 +49,10 @@ bot.command('start')
      
 
 //})
+
+
+
+
 
 
 
@@ -78,7 +86,7 @@ function startingKeyboard(menu) {
 
 
 bot.command('getintent').invoke(function (ctx) {
-    return axios.get('http://369067ff.ngrok.io/processor/v1/userIntents/' + ctx.message.contact.phone_number)
+    return axios.get('http://b9b9cbee.ngrok.io/processor/v1/userIntents/' + ctx.message.contact.phone_number)
         .then((response) => {
 
             startingKeyboard(response.data)
@@ -96,51 +104,16 @@ bot.command('getintent').invoke(function (ctx) {
 })
 
 
-//Registration
 
-
-// bot.command('number').invoke(function (ctx) {
-//     var option = {
-//         "parse_mode": "Markdown",
-//         "reply_markup": {
-//             "one_time_keyboard": true,
-//             "keyboard": [[{
-//                 text: "My phone number",
-//                 request_contact: true
-//             }], ["Cancel"]]
-
-//         }
-        
-
-//     };
-//     console.log('invoke phase')
-   
-//     //  ctx.sendMessage("may i have your number to register" , option)
-
-//     return ctx.sendMessage("may i have your number to register", option) 
-
-   
-     
-//     // bot.api.sendMessage(msg.chat.id, "How can we contact you?", option).then(() => {
-//     //     bot.api.on("contact",(msg)=>{
-            
-//     //         bot.api.sendMessage(msg.chat.id,
-//     //                         util.format('Thank you %s with phone %s!', msg.contact.first_name, msg.contact.phone_number),
-//     //                         option)
-//     //         })
-//     // })
-// }).answer(function (ctx) {
-//     console.log('answer phase')
-//     addUserDetails(ctx)
-//     return ctx.go('intent')
-// })
 
 
 
 //calling addUserDetails
-bot.command('number')
+bot.command('n')
 .invoke(function (ctx) {
+
     console.log('invoke')
+    
     var option = {
         "parse_mode": "Markdown",
         "reply_markup": {
@@ -149,24 +122,29 @@ bot.command('number')
                 text: "My phone number",
                 request_contact: true
             }], ["Cancel"]]
+            
 
         }
         
+    }; ctx.sendMessage("Y'ello "+ ctx.meta.user.first_name +  " may i have your number to register", option);
+    return ctx.go('default');
+    
 
-    };
-  return ctx.sendMessage("Y'ello "+ ctx.meta.user.first_name +  " may i have your number to register", option);
 })
+
 .answer(function (ctx) {
 //return  ctx.sendMessage('thanks')
 console.log('answer')
 console.log('answer phase')
 // addUserDetails(ctx)
-     return ctx.go('intent')
+
+return bot.withContext(ctx.message.contact.phone_number, function (ctx) {
+    return ctx.go('intent') 
+  });
+
+  
+
 })
-
-
-   
-
 
 //memory session (storing user Intent)
 
@@ -190,6 +168,8 @@ bot.command('intent')
         return ctx.go('Confirmation');
     });
 
+
+    //Cornelius street
 
 
 //confirmation prompt message
@@ -241,7 +221,7 @@ bot.command('typepromos')
 
 bot.command('promos')
     .invoke(function (ctx) {
-        return axios.get('http://369067ff.ngrok.io/processor/v1/promotions')
+        return axios.get('http://b9b9cbee.ngrok.io/processor/v1/promotions')
             .then((response) => {
 
 
@@ -289,7 +269,7 @@ function addUserIntent(ctx) {
 
     //posting data to the processor endpoint
 console.log('posting intents')
-    axios.post('http://369067ff.ngrok.io/processor/v1/saveUserIntents/', userData)
+    axios.post('http://b9b9cbee.ngrok.io/processor/v1/saveUserIntents/', userData)
         .then(function (response) {
             console.log(response.data);
 
@@ -310,7 +290,7 @@ console.log('posting intents')
 
 function addUserDetails(ctx) {
     let userID = {
-    //msdin: ctx.message.contact.phone_number,
+    msdin: ctx.message.contact.phone_number,
     telegram_id: ctx.meta.user.id,
     first_name: ctx.meta.user.first_name,
     last_name: ctx.meta.user.last_name
@@ -321,7 +301,7 @@ function addUserDetails(ctx) {
 
     //posting data to the processor endpoint
 
-    axios.post('http://369067ff.ngrok.io/processor/v1/saveUserDetails', userID)
+    axios.post('http://b9b9cbee.ngrok.io/processor/v1/saveUserDetails', userID)
         .then(function (response) {
             console.log(response.data);
 
