@@ -16,7 +16,7 @@ function addUserDetails(ctx) {
     console.log(userID);
 
     //posting data to the processor endpoint
-    axios.post('http://369067ff.ngrok.io/processor/v1/saveUserDetails', userID)
+    axios.post('http://3a889a71.ngrok.io/processor/v1/saveUserDetails', userID)
         .then(function (response) {
             console.log(response.data);
         })

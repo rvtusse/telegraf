@@ -181,7 +181,7 @@ bot.command('default')
         return ctx.sendMessage('Yoh! ' + ctx.meta.user.first_name + ',' + ' what would you like to do now?')
     })
     .keyboard([
-        [{ 'saved intent': { go: 'typingt' } }],
+        [{ 'saved intent': { go: 'typing' } }],
         [{ 'New intent': { go: 'intent' } }],
         [{ 'Chit-chat': { go: 'typepromos' } }]
     ])
