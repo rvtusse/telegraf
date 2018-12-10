@@ -18,6 +18,7 @@
     "firebase-admin": "^6.2.0",
     "firebase-functions": "^2.1.0",
     "firebase-functions-helper": "^0.6.0",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.11",
+    "telegraf": "^3.25.5"
   }
 }
