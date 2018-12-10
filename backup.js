@@ -244,7 +244,7 @@ bot.command('getintent').invoke(function (ctx) {
         .catch(function(error){
             ctx.sendMessage('sorry server currently down')
             return ctx.go('default')
-           })
+           })|'''''''
         
  })
     
