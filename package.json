@@ -19,6 +19,7 @@
     "firebase-functions": "^2.1.0",
     "firebase-functions-helper": "^0.6.0",
     "lodash": "^4.17.11",
-    "telegraf": "^3.25.5"
+    "telegraf": "^3.25.5",
+    "telegram-typings": "^4.0.0-beta"
   }
 }

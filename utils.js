@@ -15,33 +15,37 @@ function addUserDetails(ctx) {
     }
     console.log(userID);
 
-    //posting data to the processor endpoint
-    axios.post('http://369067ff.ngrok.io/processor/v1/saveUserDetails', userID)
+    /*
+        posting data to the processor endpoint
+    */
+    axios.post('http://0b58526a.ngrok.io/processor/v1/saveUserDetails', userID)
         .then(function (response) {
             console.log(response.data);
         })
-        .catch(function (error) {      
-            ctx.sendMessage('server currently down')
-            return ctx.go('default')
-        })
+
 }
 
-function demo(){
+
+
+
+    /*
+    ADDING USER INTENT TO FIRESTORE
+    */
+ function addUserIntent(ctx) {
+
+    let userIntent = {
+        msdin: ctx.session.contact_number,
+        telegram_id: ctx.update.message.chat.id,
+
+    }
+    axios.post('http://0b58526a.ngrok.io/processor/v1/saveuserIntents', userIntent)
+        .then(function (response) {
+            console.log(response.data);
+        })
 
 }
 
 module.exports = {
-    addUserDetails : addUserDetails,
-    demo : demo,
+    addUserDetails: addUserDetails,
+    addUserIntent: addUserIntent,
 }
-
-
-//To call this in another file,
-//
-// utils.demo()
-
-//or
-
-
-// utils.addUserDetails()
-//
