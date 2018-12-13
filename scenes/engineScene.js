@@ -6,7 +6,7 @@ const axios = require('axios')
 //DEAFULT KEYBOARD FOR EXISISTING USER
 engineScene.enter(function (ctx) {
 
-    ctx.reply('What would you like to do', Markup
+    ctx.reply('What would you like to do today?', Markup
         .keyboard([
             [' New Intent'],
             ['Saved Intent'],

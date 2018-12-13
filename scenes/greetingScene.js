@@ -6,6 +6,6 @@ const adminVerifyPhish = new Scene('registerUser');
 const greeter = new Scene('greeter')
 greeter.enter((ctx) => ctx.reply('Hi'))
 greeter.leave((ctx) => ctx.reply('Bye'))
-greeter.on('message', (ctx) => ctx.reply('Send `hi`'))
+greeter.on('message', (ctx) => ctx.reply(`hi`))
 
 module.exports = greeter;
