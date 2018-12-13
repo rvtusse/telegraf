@@ -16,9 +16,10 @@ function addUserDetails(ctx) {
     console.log(userID);
 
     /*
-        posting data to the processor endpoint
+        Posting data to the processor endpoint
     */
-    axios.post('http://0b58526a.ngrok.io/processor/v1/saveUserDetails', userID)
+   ChatAction = 'typing'
+    axios.post('http://15de0c9a.ngrok.io/processor/v1/saveUserDetails', userID)
         .then(function (response) {
             console.log(response.data);
         })
@@ -38,7 +39,7 @@ function addUserDetails(ctx) {
         telegram_id: ctx.update.message.chat.id,
 
     }
-    axios.post('http://0b58526a.ngrok.io/processor/v1/saveuserIntents', userIntent)
+    axios.post('http://15de0c9a.ngrok.io/processor/v1/saveuserIntents', userIntent)
         .then(function (response) {
             console.log(response.data);
         })

@@ -5,11 +5,10 @@ const axios = require('axios')
 
 //DEAFULT KEYBOARD FOR EXISISTING USER
 engineScene.enter(function (ctx) {
-
+    console.log(ctx.session.state)
     ctx.reply('What would you like to do', Markup
         .keyboard([
-            [' New Intent'],
-            ['Saved Intent'],
+            ['History'],
             ['Promo'],
             ['Exit']
         ])

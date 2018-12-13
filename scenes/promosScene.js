@@ -1,19 +1,19 @@
 const Scene = require('telegraf/scenes/base')
-const chitChatScene = new Scene('chitChatScene')
+const promosScene = new Scene('promosScene')
 const TT = require("telegram-typings")
 const axios = require('axios')
 
- ChatAction = 'typing'
-chitChatScene.enter((ctx) => {
+
+promosScene.enter((ctx) => {
     console.log("Entering the promos scene.");
     ctx.reply('Hi there ' + ctx.update.message.chat.first_name + ' Did you know?')
-    axios.get('http://0b58526a.ngrok.io/processor/v1/promotions')
+    axios.get('http://15de0c9a.ngrok.io/processor/v1/promotions')
         .then(response => {
             console.log(response);
             ctx.reply(response.data.advert);
         });
     console.log(ctx);
-    // ctx.scene.enter('engineScene');
+    ctx.reply('To go back to main menu press /start');
 })
 /*
 bot.catch((err) => {
@@ -21,4 +21,4 @@ bot.catch((err) => {
     ctx.scene.enter('savedIntentScene');
 });
 */
-module.exports = chitChatScene;
+module.exports = promosScene;
