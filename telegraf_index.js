@@ -5,7 +5,7 @@ const session = require('telegraf/session')
 const Stage = require('telegraf/stage')
 const Scene = require('telegraf/scenes/base')
 const { leave } = Stage
-const getIntentScene = require('./scenes/getIntentScene');
+const getIntentScene = require('./scenes/getIntentScenes');
 const registerScene = require('./scenes/registerScene');
 const engineScene = require('./scenes/engineScene');
 const promosScene = require('./scenes/promosScene');
@@ -14,10 +14,13 @@ const bot = new Telegraf("795833285:AAGBmXjnQMdNzS31jDP7eeHCDmEqpReqTF8");
 var axios = require('axios');
 
 // Create scene manager
+
 const stage = new Stage()
 stage.command('cancel', leave())
 
 // Scene registration - Register all of the scenes here. 
+
+stage.register(greetingScene);
 stage.register(getIntentScene);
 stage.register(registerScene);
 stage.register(engineScene);
