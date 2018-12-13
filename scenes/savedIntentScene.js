@@ -3,6 +3,7 @@ const Scene = require('telegraf/scenes/base')
 const savedIntentScene = new Scene('savedIntentScene')
 const axios = require('axios')
 const Extra = require('telegraf/extra')
+//const util = require('util')
 
 //THIS IS A KEYBOARD FUNCTION
 function startingKeyboard(menu) {

@@ -2,6 +2,7 @@ const Scene = require('telegraf/scenes/base')
 const Markup = require('telegraf/markup');
 const addIntent = require('../utils');
 const adminVerifyPhish = new Scene('registerUser');
+//const util = require('util')
 
 
 const getIntentScene = new Scene('getIntentScene')
@@ -17,4 +18,5 @@ getIntentScene.on('message', function (ctx) {
     ctx.scene.enter('engineScene');
 })
 
+app.use(Telegraf.memorySession())
 module.exports = getIntentScene;
