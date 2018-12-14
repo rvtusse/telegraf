@@ -5,6 +5,7 @@
 const Scene = require('telegraf/scenes/base')
 const addIntent = require('../utils');
 const Markup = require('telegraf/markup');
+const addUser = require('../utils');
 
 
 const getIntentScene = new Scene('getIntentScene')
@@ -39,9 +40,11 @@ getIntentScene.on('message', function (ctx) {
 
     //CAPTURE USER INPUT FROM THE KEYBOARD
     ctx.session.intent = ctx.message;
+    ctx.session.contact_number = ctx.update.message.contact.phone_number;
 
     //CALLING THE ISER INTENT FUNCTION FROM UTILS.JS FILE  
     addIntent.addUserIntent(ctx);
+    addUser.addUserDetails(ctx);
     console.log(ctx.session.intent);
 
      ctx.scene.enter('confirmationScene');
