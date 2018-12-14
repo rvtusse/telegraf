@@ -3,6 +3,7 @@ const Scene = require('telegraf/scenes/base')
 const savedIntentScene = new Scene('savedIntentScene')
 const axios = require('axios')
 const Extra = require('telegraf/extra')
+const Markup = require('telegraf/markup');
 //const util = require('util')
 
 //THIS IS A KEYBOARD FUNCTION
@@ -14,7 +15,7 @@ function startingKeyboard(menu) {
 }
 // GET STORED USER INTENT FROM THE PROCCESOR
 savedIntentScene.enter((ctx) => {
-    axios.get('http://560cd184.ngrok.io/processor/v1/savedIntent/' + ctx.session.contact_number +  '/' + ctx.session.intent)
+    axios.get('http://560cd184.ngrok.io/processor/v1/userIntents/' + ctx.session.contact_number )
         .then(response => {
 
             //CALLING KEYBOARD FUNCTION
@@ -22,6 +23,16 @@ savedIntentScene.enter((ctx) => {
             console.log(response.data);
             ctx.reply(response.data);
             //ctx.scene.enter('')
+
+            ctx.reply('Would you like to do something else?', Markup
+            .keyboard([
+                response.data
+            
+            ])
+            .oneTime()
+            .resize()
+            .extra()
+    )
 
         })
 

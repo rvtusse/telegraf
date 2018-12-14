@@ -1,3 +1,4 @@
+
 var axios = require('axios');
 
 const admin = require('firebase-admin') ;
@@ -243,7 +244,7 @@ bot.command('getintent').invoke(function (ctx) {
         .catch(function(error){
             ctx.sendMessage('sorry server currently down')
             return ctx.go('default')
-           })
+           })|'''''''
         
  })
     
