@@ -40,6 +40,10 @@ function addUserIntent(ctx) {
     CONSOLE THE USER INPUT / TEXT TYPED ON THE KEYBOARD
     */
     console.log(userIntent.text);
+
+    /*
+    SEND USER INTENT TO SAVEUSER INTENTS END-POINT 
+    */
     axios.post('http://560cd184.ngrok.io/processor/v1/saveuserIntents', userIntent)
         .then(function (response) {
             console.log(response.data);
@@ -47,7 +51,6 @@ function addUserIntent(ctx) {
         })
 
 }
-
 
 module.exports = {
     addUserDetails: addUserDetails,

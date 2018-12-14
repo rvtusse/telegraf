@@ -6,10 +6,12 @@ const Stage = require('telegraf/stage')
 const Scene = require('telegraf/scenes/base')
 const { leave } = Stage
 const getIntentScene = require('./scenes/getIntentScene');
+const savedIntentScene = require('./scenes/savedIntentScene');
 const registerScene = require('./scenes/registerScene');
 const engineScene = require('./scenes/engineScene');
 const promosScene = require('./scenes/promosScene');
 const confirmationScene = require('./scenes/confirmationScene');
+const keyboardScene = require('./scenes/keyboardScene');
 const bot = new Telegraf("795833285:AAGBmXjnQMdNzS31jDP7eeHCDmEqpReqTF8");
 var axios = require('axios');
 
@@ -26,6 +28,8 @@ stage.register(registerScene);
 stage.register(engineScene);
 stage.register(promosScene);
 stage.register(confirmationScene);
+stage.register(keyboardScene);
+stage.register(savedIntentScene);
 
 
 bot.use(session())
@@ -60,7 +64,8 @@ bot.hears("Get Started!", ctx => ctx.scene.enter("getIntentScene"));
 bot.hears("Exit", ctx => ctx.reply("Bye  " +  ctx.update.message.chat.first_name));
 bot.hears('New Intent', ctx => ctx.scene.enter('getIntentScene'));
 bot.hears('Promo', ctx => ctx.scene.enter('promosScene'));
-bot.hears('Yes', ctx => ctx.scene.enter('engineScene'));
+bot.hears('Yes', ctx => ctx.scene.enter('getIntentScene'));
+bot.hears('History', ctx => ctx.scene.enter('savedIntentScene'));
 bot.hears("No", ctx => ctx.reply("Bye  " +  ctx.update.message.chat.first_name + '\nTo go back to main menu press /start'));
 
 bot.startPolling()
