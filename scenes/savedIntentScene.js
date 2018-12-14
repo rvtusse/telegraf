@@ -14,14 +14,14 @@ function startingKeyboard(menu) {
 }
 // GET STORED USER INTENT FROM THE PROCCESOR
 savedIntentScene.enter((ctx) => {
-    axios.get('http://560cd184.ngrok.io/processor/v1/userIntents/' + ctx.session.contact_number)
+    axios.get('http://560cd184.ngrok.io/processor/v1/savedIntent/' + ctx.session.contact_number +  '/' + ctx.session.intent)
         .then(response => {
 
             //CALLING KEYBOARD FUNCTION
-            startingKeyboard(response.data)
+            //startingKeyboard(response.data)
             console.log(response.data);
-            //ctx.reply(response.data);
-            ctx.scene.enter('')
+            ctx.reply(response.data);
+            //ctx.scene.enter('')
 
         })
 

@@ -13,17 +13,16 @@
 
 
 const Scene = require('telegraf/scenes/base')
-const Markup = require('telegraf/markup')
 const engineScene = new Scene('engineScene')
 const axios = require('axios')
 
 
-function startingKeyboard(menu) {
-    defaultKeyboard = menu
-    console.log('This is the keyboard function')
-    bot.keyboard(defaultKeyboard)
+// function DefaultMenuKeyboard(menu) {
+//     defaultKeyboard = menu
+//     console.log('This is the keyboard function')
+//     .keyboard(defaultKeyboard)
 
-}
+// }
 
 
 
@@ -45,7 +44,7 @@ engineScene.enter(function (ctx) {
                 .then(response => {
         
                     //CALLING KEYBOARD FUNCTION
-                    startingKeyboard(response.data)
+                    // DefaultMenuKeyboard(response.data)
                     console.log(response.data);
                    
         

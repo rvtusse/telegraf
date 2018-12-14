@@ -1,6 +1,6 @@
 const Telegraf = require('telegraf')
 const  tt = require("telegram-typings")
-
+const Markup = require('telegraf/markup');
 const session = require('telegraf/session')
 const Stage = require('telegraf/stage')
 const Scene = require('telegraf/scenes/base')
@@ -39,7 +39,7 @@ bot.use(stage.middleware());
 bot.start(function (ctx) {
 
     //ctx.scene.enter('registerScene');
-    ctx.reply("Y'ello!");
+    ctx.reply("Y'ello! " + ctx.update.message.chat.first_name);
     axios.get('http://560cd184.ngrok.io/processor/v1/userDetails/' + ctx.chat.id)
         .then(response => {
             if (response.data.exists === true) {
@@ -63,9 +63,24 @@ bot.start(function (ctx) {
 bot.hears("Get Started!", ctx => ctx.scene.enter("getIntentScene"));
 bot.hears("Exit", ctx => ctx.reply("Bye  " +  ctx.update.message.chat.first_name));
 bot.hears('New Intent', ctx => ctx.scene.enter('getIntentScene'));
-bot.hears('Promo', ctx => ctx.scene.enter('promosScene'));
+bot.hears('Promos', ctx => ctx.scene.enter('promosScene'));
 bot.hears('Yes', ctx => ctx.scene.enter('getIntentScene'));
 bot.hears('History', ctx => ctx.scene.enter('savedIntentScene'));
+//bot.hears('Yes', ctx => ctx.scene.enter('engineScene'));
 bot.hears("No", ctx => ctx.reply("Bye  " +  ctx.update.message.chat.first_name + '\nTo go back to main menu press /start'));
+
+confirmationScene.hears('Yes', function(ctx) {
+    ctx.reply('Would you like to do something else?', Markup
+        .keyboard([
+            ['History'],
+            ['Promos'],
+            ['exit']
+          
+        ])
+        .oneTime()
+        .resize()
+        .extra()
+    )
+})
 
 bot.startPolling()
