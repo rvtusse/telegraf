@@ -5,7 +5,7 @@ const session = require('telegraf/session')
 const Stage = require('telegraf/stage')
 const Scene = require('telegraf/scenes/base')
 const { leave } = Stage
-const getIntentScene = require('./scenes/getIntentScenes');
+const getIntentScene = require('./scenes/getIntentScene');
 const registerScene = require('./scenes/registerScene');
 const engineScene = require('./scenes/engineScene');
 const promosScene = require('./scenes/promosScene');
@@ -20,7 +20,7 @@ stage.command('cancel', leave())
 
 // Scene registration - Register all of the scenes here. 
 
-stage.register(greetingScene);
+
 stage.register(getIntentScene);
 stage.register(registerScene);
 stage.register(engineScene);
@@ -36,14 +36,14 @@ bot.start(function (ctx) {
 
     //ctx.scene.enter('registerScene');
     ctx.reply("Y'ello!");
-    axios.get('http://15de0c9a.ngrok.io/processor/v1/userDetails/' + ctx.chat.id)
+    axios.get('http://560cd184.ngrok.io/processor/v1/userDetails/' + ctx.chat.id)
         .then(response => {
             if (response.data.exists === true) {
                 console.log("[+] The user exists, routing to the default menu.");
                 console.log(response);
                 
                 ctx.session.contact_number = response.data.msdin
-                ctx.scene.enter('engineScene');
+                ctx.scene.enter('getIntentScene');
 
                 
             }

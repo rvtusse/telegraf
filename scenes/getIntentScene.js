@@ -17,26 +17,19 @@ getIntentScene.enter(function (ctx) {
 });
 
 getIntentScene.on('message', function (ctx) {
-    addIntent.addUserIntent(ctx);
-
-    addIntent.sendUserIntent(ctx);
+    
     console.log('Getting user intent..');
 
     //Capture user input from keyboard
     ctx.session.intent = ctx.message;
+    addIntent.addUserIntent(ctx);
+    console.log( ctx.session.intent);
 
     ctx.scene.enter('confirmationScene');
+
 })
 
 
-// GET STORED USER INTENT FROM THE PROCCESOR
-axios.get('http://15de0c9a.ngrok.io/processor/v1/savedIntent/' + ctx.contact.phone_number)
-    .then(response => {
 
-        //CALLING A KEYBOARD FUNCTION
-        console.log(response.data)
-        console.log(response);
-        ctx.reply(response.data);
-    })
 
 module.exports = getIntentScene;
