@@ -18,17 +18,16 @@ function addUserDetails(ctx) {
     /*
         Posting data to the processor endpoint
     */
-   ChatAction = 'typing'
     axios.post('http://560cd184.ngrok.io/processor/v1/saveUserDetails', userID)
         .then(function (response) {
             console.log(response.data);
         })
 
 }
-    /*
-    ADDING USER INTENT TO FIRESTORE
-    */
- function addUserIntent(ctx) {
+/*
+ADDING USER INTENT TO FIRESTORE AND CALLING IT TO GET INTENT SCENE
+*/
+function addUserIntent(ctx) {
 
     let userIntent = {
         msdin: ctx.session.contact_number,
@@ -37,11 +36,14 @@ function addUserDetails(ctx) {
 
 
     }
+    /*
+    CONSOLE THE USER INPUT / TEXT TYPED ON THE KEYBOARD
+    */
     console.log(userIntent.text);
     axios.post('http://560cd184.ngrok.io/processor/v1/saveuserIntents', userIntent)
         .then(function (response) {
             console.log(response.data);
-            
+
         })
 
 }
@@ -50,5 +52,5 @@ function addUserDetails(ctx) {
 module.exports = {
     addUserDetails: addUserDetails,
     addUserIntent: addUserIntent,
-   
+
 }
