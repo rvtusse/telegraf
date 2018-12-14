@@ -29,11 +29,13 @@ bot.command('start')
                 console.log(response.data)
                 if (response.data.exists === true) {
                     console.log("[+] The user exists, routing to the default menu.")
-                    return ctx.go('default');
+                    // return ctx.go('default');
+                    return ctx.sendMessage('Welcome back , ' + ctx.meta.user.first_name+ ' click on this command to start /default')
                 }
                 else{
                     console.log("[-] The user does not exist, routing to the number menu.")
-                    return ctx.go('number');
+                    // return ctx.go('number');
+                    return ctx.sendMessage('Hi ' + ctx.meta.user.first_name + 'i see that your new here , may you click on /number command  to begin registration')
                 }
             })
 
@@ -76,23 +78,46 @@ function startingKeyboard(menu) {
 // get stored intent from processor, 'intent' command(retrieve existing user stored intent)
 
 
-bot.command('getintent').invoke(function (ctx) {
-    return axios.get('http://b9b9cbee.ngrok.io/processor/v1/userIntents/' + ctx.message.contact.phone_number)
-        .then((response) => {
+// bot.command('getintent').invoke(function (ctx) {
 
-            startingKeyboard(response.data)
-            console.log('i am here')
-            console.log(response.data)
+//    ctx.sendMessage('Click on the keyboard to go to the shortcut quickly')
 
-        })
-        .catch(function (error) {
-            ctx.sendMessage('server currently down')
-            return ctx.go('default')
-        })
-    //    .answer(function (ctx) {
+//    return bot.keyboard ([
+//     [{'Airtime':{go:'savedIntents'}}],
+//     [{'Data': {go: 'savedIntents'}}],
+//     [{'Social Bundles': {go: 'savedIntents'}}]
+//  ])
 
-    // })
-})
+
+//     // return axios.get('http://b9b9cbee.ngrok.io/processor/v1/userIntents/' + ctx.message.contact.phone_number)
+//     //     .then((response) => {
+
+//     //         startingKeyboard(response.data)
+//     //         console.log('i am here')
+//     //         console.log(response.data)
+
+//     //     })
+//     //     .catch(function (error) {
+//     //         ctx.sendMessage('server currently down')
+//     //         return ctx.go('default')
+//     //     })
+//     //    .answer(function (ctx) {
+
+//     // })
+// })
+
+ 
+
+// bot.command('savedIntents')
+// .invoke((ctx) => {
+//      return ctx.sendMessage('Your shortcut has been excuted')
+    
+     
+//  })
+//  return ctx.go('default')
+//  .answer((ctx) => {
+   
+//  })
 
 
 //calling addUserDetails
@@ -139,8 +164,7 @@ bot.command('number')
 
 bot.command('intent')
     .invoke(function (ctx) {
-        return ctx.sendMessage("Number captured, "
-            + "What would you like to do today");
+        return ctx.sendMessage("What would you like to do today");
     })
     .answer(function (ctx) {
         ctx.session.memory = ctx.session.memory || '';
@@ -148,9 +172,9 @@ bot.command('intent')
         ctx.data.memory = ctx.session.memory;
         //console.log(ctx.message.contact.phone_number);
 
-        //calling addUserIntent
-        addUserIntent(ctx);
-        addUserDetails(ctx)
+        // //calling addUserIntent
+        // addUserIntent(ctx);
+        // addUserDetails(ctx)
         return ctx.sendMessage('Thanks, your request is being processed');
     })
     .answer(function (ctx) {
@@ -179,20 +203,21 @@ bot.command('Confirmation')
 //Yes command (Existing user keyboard)
 
 bot.command('default')
-    .invoke(function (ctx) {
-        console.log("here");
-        console.log(ctx);
-        return ctx.sendMessage('Yoh! ' + ctx.meta.user.first_name + ',' + ' what would you like to do now?')
-    })
-    .keyboard([
-        [{ 'saved intent': { go: 'typing' } }],
-        [{ 'New intent': { go: 'intent' } }],
-        [{ 'Chit-chat': { go: 'typepromos' } }]
-    ])
-    .answer(function (ctx) {
-        ctx.data.answer = ctx.answer;
+.invoke(function (ctx) {
+    console.log("here");
+    console.log(ctx);
+    return ctx.sendMessage('Yoh! ' + ctx.meta.user.first_name + ',' + ' what would you like to do now?')
+})
+.keyboard([
+    // [{ 'saved intent': { go: 'typing' } }],
+    [{ 'New intent': { go: 'intent' } }],
+    [{ 'Promos': { go: 'typepromos' } }], 
+    [{'Exit': {go: 'bye'}}]
+])
+.answer(function (ctx) {
+    ctx.data.answer = ctx.answer;
 
-    });
+});
 
 
 //chat action typing 1 ONE 
@@ -220,7 +245,7 @@ bot.command('promos')
                 console.log(response.data)
                 //ctx.sendMessage(ctx.meta.user.first_name + '  did you know about this ?')
                 ctx.sendMessage(response.data.advert)
-                return ctx.go('chitchat')
+                return ctx.go('default')
             })
             .catch(function (error) {
                 ctx.sendMessage('server currently down')
@@ -237,7 +262,8 @@ bot.command('promos')
 
 bot.command('chitchat')
     .invoke((ctx) => {
-        return ctx.sendMessage('Sawubona ' + ctx.meta.user.first_name)
+         ctx.sendMessage('You can find out more deals here ' + ctx.meta.user.first_name)
+         return ctx.go('default')
     })
 
 

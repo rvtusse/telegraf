@@ -1,11 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
-
->>>>>>> 26813d5892c874b3b755eab3efbcbd0da7ff544c
-=======
->>>>>>> 4bb1d481ccd90205a35cd19b094ff82e6ff400af
 var axios = require('axios');
 
 const admin = require('firebase-admin') ;
