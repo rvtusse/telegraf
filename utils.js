@@ -32,7 +32,8 @@ function addUserDetails(ctx) {
 
     let userIntent = {
         msdin: ctx.session.contact_number,
-        telegram_id: ctx.update.message.chat.id,
+        userIntent: ctx.session.intent,
+
 
     }
     axios.post('http://15de0c9a.ngrok.io/processor/v1/saveuserIntents', userIntent)
@@ -41,31 +42,11 @@ function addUserDetails(ctx) {
         })
 
 }
-//FUNCTION TO SEND USER INPUT TO ENGINE SCENE 
-function sendUserIntent(ctx) {
 
-    let intent = {
-        userData: ctx.session.intent
 
-    }
-
-    //SEND USER DATA TO HERVER END-POINT ENGINE SCENE
-    getIntentScene.enter((ctx) => {
-
-        axios.post('http://15de0c9a.ngrok.io/processor/v1/savedIntent/' + intent)
-            .then(response => {
-
-                //CALLING A KEYBOARD FUNCTION
-                console.log(response.data)
-                console.log(response);
-                ctx.reply(response.data);
-            })
-        console.log(intent);
-    })
-}
 
 module.exports = {
     addUserDetails: addUserDetails,
     addUserIntent: addUserIntent,
-    sendUserIntent: sendUserIntent
+   
 }
