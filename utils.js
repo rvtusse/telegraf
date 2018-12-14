@@ -19,7 +19,7 @@ function addUserDetails(ctx) {
         Posting data to the processor endpoint
     */
    ChatAction = 'typing'
-    axios.post('http://15de0c9a.ngrok.io/processor/v1/saveUserDetails', userID)
+    axios.post('http://560cd184.ngrok.io/processor/v1/saveUserDetails', userID)
         .then(function (response) {
             console.log(response.data);
         })
@@ -36,13 +36,12 @@ function addUserDetails(ctx) {
 
 
     }
-    axios.post('http://15de0c9a.ngrok.io/processor/v1/saveuserIntents', userIntent)
+    axios.post('http://560cd184.ngrok.io/processor/v1/saveuserIntents', userIntent)
         .then(function (response) {
             console.log(response.data);
         })
 
 }
-
 
 
 module.exports = {

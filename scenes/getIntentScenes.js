@@ -24,6 +24,8 @@ getIntentScene.on('message', function (ctx) {
     //Capture user input from keyboard
     ctx.session.intent = ctx.message;
 
+    console.log( ctx.session.intent);
+
     ctx.scene.enter('confirmationScene');
 
 })
