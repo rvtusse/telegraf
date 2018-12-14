@@ -40,7 +40,7 @@ bot.start(function (ctx) {
 
     //ctx.scene.enter('registerScene');
     ctx.reply("Y'ello! " + ctx.update.message.chat.first_name);
-    axios.get('http://560cd184.ngrok.io/processor/v1/userDetails/' + ctx.chat.id)
+    axios.get('http://d42a7750.ngrok.io/processor/v1/userDetails/' + ctx.chat.id)
         .then(response => {
             if (response.data.exists === true) {
                 console.log("[+] The user exists, routing to the default menu.");

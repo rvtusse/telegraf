@@ -8,7 +8,7 @@ const util = require('util')
  promosScene.enter((ctx) => {
     console.log(ctx);
     ctx.reply('Hi there ' + ctx.update.message.chat.first_name + ' Did you know?')
-    axios.get('http://560cd184.ngrok.io/processor/v1/promotions')
+    axios.get('http://d42a7750.ngrok.io/processor/v1/promotions')
         .then(response => {
             console.log(response);
             ctx.reply(response.data.advert);
