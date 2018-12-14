@@ -5,7 +5,7 @@ const session = require('telegraf/session')
 const Stage = require('telegraf/stage')
 const Scene = require('telegraf/scenes/base')
 const { leave } = Stage
-const getIntentScene = require('./scenes/getIntentScenes');
+const getIntentScene = require('./scenes/getIntentScene');
 const registerScene = require('./scenes/registerScene');
 const engineScene = require('./scenes/engineScene');
 const promosScene = require('./scenes/promosScene');
@@ -19,6 +19,7 @@ const stage = new Stage()
 stage.command('cancel', leave())
 
 // Scene registration - Register all of the scenes here. 
+
 
 stage.register(getIntentScene);
 stage.register(registerScene);

@@ -17,13 +17,12 @@ getIntentScene.enter(function (ctx) {
 });
 
 getIntentScene.on('message', function (ctx) {
-    addIntent.addUserIntent(ctx);
-
+    
     console.log('Getting user intent..');
 
     //Capture user input from keyboard
     ctx.session.intent = ctx.message;
-
+    addIntent.addUserIntent(ctx);
     console.log( ctx.session.intent);
 
     ctx.scene.enter('confirmationScene');

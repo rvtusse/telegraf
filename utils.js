@@ -32,13 +32,16 @@ function addUserDetails(ctx) {
 
     let userIntent = {
         msdin: ctx.session.contact_number,
-        userIntent: ctx.session.intent,
+        intent: ctx.session.intent.text,
+        telegram_id: ctx.update.message.chat.id
 
 
     }
+    console.log(userIntent.text);
     axios.post('http://560cd184.ngrok.io/processor/v1/saveuserIntents', userIntent)
         .then(function (response) {
             console.log(response.data);
+            
         })
 
 }
