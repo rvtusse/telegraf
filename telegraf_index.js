@@ -60,7 +60,20 @@ bot.hears("Get Started!", ctx => ctx.scene.enter("getIntentScene"));
 bot.hears("Exit", ctx => ctx.reply("Bye  " +  ctx.update.message.chat.first_name));
 bot.hears('New Intent', ctx => ctx.scene.enter('getIntentScene'));
 bot.hears('Promo', ctx => ctx.scene.enter('promosScene'));
-bot.hears('Yes', ctx => ctx.scene.enter('engineScene'));
+//bot.hears('Yes', ctx => ctx.scene.enter('engineScene'));
 bot.hears("No", ctx => ctx.reply("Bye  " +  ctx.update.message.chat.first_name + '\nTo go back to main menu press /start'));
+confirmationScene.hears('Yes', function(ctx) {
+    ctx.reply('Would you like to do something else?', Markup
+        .keyboard([
+            ['History'],
+            ['Promos'],
+            ['exit']
+          
+        ])
+        .oneTime()
+        .resize()
+        .extra()
+    )
+})
 
 bot.startPolling()
