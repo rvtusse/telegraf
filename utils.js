@@ -30,7 +30,7 @@ ADDING USER INTENT TO FIRESTORE AND CALLING IT TO GET INTENT SCENE
 function addUserIntent(ctx) {
 
     let userIntent = {
-        msdin: ctx.update.message.contact.phone_number,
+        msdin: ctx.session.contact_number,
         intent: ctx.session.intent.text,
         telegram_id: ctx.update.message.chat.id
 

@@ -20,13 +20,14 @@ savedIntentScene.enter((ctx) => {
 
             //CALLING KEYBOARD FUNCTION
             //startingKeyboard(response.data)
-            console.log(response.data);
-            ctx.reply(response.data);
+            console.log(response);
+            ctx.reply(JSON.stringify(response.data.exists));
             //ctx.scene.enter('')
 
             ctx.reply('Would you like to do something else?', Markup
             .keyboard([
-                response.data
+
+                response
             
             ])
             .oneTime()
