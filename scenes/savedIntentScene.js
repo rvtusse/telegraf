@@ -15,7 +15,7 @@ function startingKeyboard(menu) {
 }
 // GET STORED USER INTENT FROM THE PROCCESOR
 savedIntentScene.enter((ctx) => {
-    axios.get('http://560cd184.ngrok.io/processor/v1/savedIntent/' + ctx.session.contact_number +  '/' + ctx.session.intent)
+    axios.get('http://560cd184.ngrok.io/processor/v1/userIntents/' + ctx.session.contact_number )
         .then(response => {
 
             //CALLING KEYBOARD FUNCTION
