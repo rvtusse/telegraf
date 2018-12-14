@@ -55,11 +55,10 @@ bot.command('yello').invoke(function (ctx) {
         }
         
     };
+    
     //Calling a user deatails function
     console.log(ctx.meta.user.phone_number);
 
-  
-    //bot.api.sendMessage(ctx.meta.chat.id, "Yello  " +ctx.meta.user.first_name + "  may you please register by entering your number", option)
     return ctx.sendMessage("Yello  " +ctx.meta.user.first_name + "  may you please register by entering your number", option)
     
     
