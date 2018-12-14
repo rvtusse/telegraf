@@ -21,6 +21,7 @@ savedIntentScene.enter((ctx) => {
             startingKeyboard(response.data)
             console.log(response.data);
             //ctx.reply(response.data);
+            ctx.scene.enter('')
 
         })
 
