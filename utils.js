@@ -16,18 +16,15 @@ function addUserDetails(ctx) {
     console.log(userID);
 
     /*
-        posting data to the processor endpoint
+        Posting data to the processor endpoint
     */
-    axios.post('http://0b58526a.ngrok.io/processor/v1/saveUserDetails', userID)
+   ChatAction = 'typing'
+    axios.post('http://15de0c9a.ngrok.io/processor/v1/saveUserDetails', userID)
         .then(function (response) {
             console.log(response.data);
         })
 
 }
-
-
-
-
     /*
     ADDING USER INTENT TO FIRESTORE
     */
@@ -38,14 +35,37 @@ function addUserDetails(ctx) {
         telegram_id: ctx.update.message.chat.id,
 
     }
-    axios.post('http://0b58526a.ngrok.io/processor/v1/saveuserIntents', userIntent)
+    axios.post('http://15de0c9a.ngrok.io/processor/v1/saveuserIntents', userIntent)
         .then(function (response) {
             console.log(response.data);
         })
 
 }
+//FUNCTION TO SEND USER INPUT TO ENGINE SCENE 
+function sendUserIntent(ctx) {
+
+    let intent = {
+        userData: ctx.session.intent
+
+    }
+
+    //SEND USER DATA TO HERVER END-POINT ENGINE SCENE
+    getIntentScene.enter((ctx) => {
+
+        axios.post('http://15de0c9a.ngrok.io/processor/v1/savedIntent/' + intent)
+            .then(response => {
+
+                //CALLING A KEYBOARD FUNCTION
+                console.log(response.data)
+                console.log(response);
+                ctx.reply(response.data);
+            })
+        console.log(intent);
+    })
+}
 
 module.exports = {
     addUserDetails: addUserDetails,
     addUserIntent: addUserIntent,
+    sendUserIntent: sendUserIntent
 }

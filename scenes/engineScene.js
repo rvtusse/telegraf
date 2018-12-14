@@ -20,6 +20,12 @@ const axios = require('axios')
 //bot.start(function (ctx) {
 
 engineScene.enter(function (ctx) {
+<<<<<<< HEAD
+    console.log(ctx.session.state)
+    ctx.reply('What would you like to do', Markup
+        .keyboard([
+            ['History'],
+=======
 
     axios.get('http://0b58526a.ngrok.io/processor/v1/userDetails/' + ctx.session.intent)
         .then(response => {
@@ -42,6 +48,7 @@ engineScene.enter(function (ctx) {
     ctx.reply('What would you like to do today?', Markup
         .keyboard([
             ['Saved Intent'],
+>>>>>>> 3bd78bcdede52259b05037e218628001a23a2bc6
             ['Promo'],
             ['Exit']
         ])
