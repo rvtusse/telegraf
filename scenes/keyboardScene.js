@@ -30,7 +30,7 @@ keyboardScene.on('message', function (ctx) {
     //CALLING THE ISER INTENT FUNCTION FROM UTILS.JS FILE  
     addIntent.addUserIntent(ctx);
     console.log(ctx.session.intent);
-    //bot.hears('Promos', ctx => ctx.scene.enter('promoScene'));
+    bot.hears('Promos', ctx => ctx.scene.enter('promoScene'));
    
 
 })
