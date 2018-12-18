@@ -44,8 +44,9 @@ bot.start(function (ctx) {
         .then(response => {
             if (response.data.exists === true) {
                 console.log("[+] The user exists, routing to the default menu.");
+                console.log(response.data.msidn)
                 
-                ctx.session.contact_number = response.data.msdin
+                ctx.session.contact_number = response.data.msidn
                 ctx.scene.enter('getIntentScene');
 
                 

@@ -13,18 +13,9 @@ const Markup = require('telegraf/markup');
 savedIntentScene.enter((ctx) => {
     axios.get('http://36ab43a2.ngrok.io/processor/v1/userIntents/' +  ctx.session.contact_number )
         .then(response => {
+            ctx.session.contact_number = response.data.msidn
 
-            if (ctx.session.contact_number === null) {
-                console.log("[+] The user exists in database");
-                ctx.session.contact_number = response.data.msdin
-            }
-            else {
-                console.log("[-] The user does not exist")
-               
-            }
-
-            
-            console.log(response.data);
+           //console.log(response.data.intent);
             ctx.reply (response.data);
            
 
@@ -32,7 +23,7 @@ savedIntentScene.enter((ctx) => {
     //         .keyboard([
 
     //          [response.data],
-    //          ['texting']
+  
             
     //         ])
     //         .oneTime()
