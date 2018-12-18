@@ -9,7 +9,7 @@ const getIntentScene = require('./scenes/getIntentScene');
 const savedIntentScene = require('./scenes/savedIntentScene');
 const registerScene = require('./scenes/registerScene');
 const engineScene = require('./scenes/engineScene');
-const promosScene = require('./scenes/promosScene');
+//const promoScene = require('./scenes/promoScene');
 const confirmationScene = require('./scenes/confirmationScene');
 const keyboardScene = require('./scenes/keyboardScene');
 const bot = new Telegraf("729223214:AAGADaHQrPvZav3gmQOE37X-cAEdg7t1x30");
@@ -26,7 +26,7 @@ stage.command('cancel', leave())
 stage.register(getIntentScene);
 stage.register(registerScene);
 stage.register(engineScene);
-stage.register(promosScene);
+//stage.register(promoScene);
 stage.register(confirmationScene);
 stage.register(keyboardScene);
 stage.register(savedIntentScene);
@@ -40,11 +40,10 @@ bot.start(function (ctx) {
 
     //ctx.scene.enter('registerScene');
     ctx.reply("Y'ello! " + ctx.update.message.chat.first_name);
-    axios.get('http://d42a7750.ngrok.io/processor/v1/userDetails/' + ctx.chat.id)
+    axios.get('http://16592cec.ngrok.io/processor/v1/userDetails/' + ctx.chat.id)
         .then(response => {
             if (response.data.exists === true) {
                 console.log("[+] The user exists, routing to the default menu.");
-                console.log(response);
                 
                 ctx.session.contact_number = response.data.msdin
                 ctx.scene.enter('getIntentScene');
@@ -55,15 +54,21 @@ bot.start(function (ctx) {
                 console.log("[-] The user does not exist, routing to the registration scene.")
                 ctx.scene.enter('registerScene');
             }
-        });
-    
 
+            bot.catch((err) => {
+                console.log('Ooops', err)
+                ctx.reply('ooops')
+              })
+        });
+     
+    
 })
+
 
 bot.hears("Get Started!", ctx => ctx.scene.enter("getIntentScene"));
 bot.hears("Exit", ctx => ctx.reply("Bye  " +  ctx.update.message.chat.first_name));
 bot.hears('New Intent', ctx => ctx.scene.enter('getIntentScene'));
-bot.hears('Promos', ctx => ctx.scene.enter('promosScene'));
+//bot.hears('Promos', ctx => ctx.scene.enter('promoScene'));
 bot.hears('Yes', ctx => ctx.scene.enter('getIntentScene'));
 bot.hears('History', ctx => ctx.scene.enter('savedIntentScene'));
 //bot.hears('Yes', ctx => ctx.scene.enter('engineScene'));

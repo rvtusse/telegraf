@@ -21,8 +21,12 @@ getIntentScene.on('message', function (ctx) {
     console.log('Getting user intent..');
 
     //Capture user input from keyboard
+   // ctx.session.contact_number = ctx.update.message.contact.phone_number;
+  // ctx.session.contact_number = response.data.msdin
+   ctx.session.chatid = ctx.update.message.chat.id
     ctx.session.intent = ctx.message;
     addIntent.addUserIntent(ctx);
+   
     console.log( ctx.session.intent);
 
     ctx.scene.enter('confirmationScene');
