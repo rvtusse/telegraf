@@ -27,10 +27,10 @@ keyboardScene.on('message', function (ctx) {
     //CAPTURE USER INPUT FROM THE KEYBOARD
     ctx.session.intent = ctx.message;
 
-    //CALLING THE ISER INTENT FUNCTION FROM UTILS.JS FILE  
+    //CALLING THE USER INTENT FUNCTION FROM UTILS.JS FILE  
     addIntent.addUserIntent(ctx);
     console.log(ctx.session.intent);
-    //bot.hears('Promos', ctx => ctx.scene.enter('promoScene'));
+    bot.hears('Promos', ctx => ctx.scene.enter('promoScene'));
    
 
 })

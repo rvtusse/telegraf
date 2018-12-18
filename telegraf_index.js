@@ -10,7 +10,7 @@ const getIntentScene = require('./scenes/getIntentScene');
 const savedIntentScene = require('./scenes/savedIntentScene');
 const registerScene = require('./scenes/registerScene');
 const engineScene = require('./scenes/engineScene');
-//const promoScene = require('./scenes/promoScene');
+const promoScene = require('./scenes/promoScene');
 const confirmationScene = require('./scenes/confirmationScene');
 const keyboardScene = require('./scenes/keyboardScene');
 const bot = new Telegraf("729223214:AAGADaHQrPvZav3gmQOE37X-cAEdg7t1x30");
@@ -27,7 +27,7 @@ stage.command('cancel', leave())
 stage.register(getIntentScene);
 stage.register(registerScene);
 stage.register(engineScene);
-//stage.register(promoScene);
+stage.register(promoScene);
 stage.register(confirmationScene);
 stage.register(keyboardScene);
 stage.register(savedIntentScene);
@@ -41,7 +41,7 @@ bot.start(function (ctx) {
 
     //ctx.scene.enter('registerScene');
     ctx.reply("Y'ello! " + ctx.update.message.chat.first_name);
-    axios.get('http://8cee9d9c.ngrok.io/processor/v1/userDetails/' + ctx.chat.id)
+    axios.get('http://36ab43a2.ngrok.io/processor/v1/userDetails/' + ctx.chat.id)
         .then(response => {
             if (response.data.exists === true) {
                 console.log("[+] The user exists, routing to the default menu.");
@@ -55,21 +55,26 @@ bot.start(function (ctx) {
                 console.log("[-] The user does not exist, routing to the registration scene.")
                 ctx.scene.enter('registerScene');
             }
-            
-        }).catch(err => console.log(err))
-        ctx.reply('Ooops!!, service is currently down , please try again in the next 5 minutes' + '\nTo go back to main menu press /start');
-     
-    
-})
 
+           
+        })
+        
+        .catch(err => console.log(err))
+        ctx.reply('Ooops!!, the service is currently down please try again in 5 minutes'+ '\nTo go back to main menu press /start') 
+       
+}) 
+
+ 
+
+ 
 
 bot.hears("Get Started!", ctx => ctx.scene.enter("getIntentScene"));
 bot.hears("Exit", ctx => ctx.reply("Bye  " +  ctx.update.message.chat.first_name));
 bot.hears('New Intent', ctx => ctx.scene.enter('getIntentScene'));
-//bot.hears('Promos', ctx => ctx.scene.enter('promoScene'));
+bot.hears('Promos', ctx => ctx.scene.enter('promoScene'));
 bot.hears('Yes', ctx => ctx.scene.enter('getIntentScene'));
 bot.hears('History', ctx => ctx.scene.enter('savedIntentScene'));
-//bot.hears('Yes', ctx => ctx.scene.enter('engineScene'));
+bot.hears('Yes', ctx => ctx.scene.enter('engineScene'));
 bot.hears("No", ctx => ctx.reply("Bye  " +  ctx.update.message.chat.first_name + '\nTo go back to main menu press /start'));
 
 confirmationScene.hears('Yes', function(ctx) {

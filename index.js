@@ -247,7 +247,7 @@ bot.command('promos')
                 ctx.sendMessage(response.data.advert)
                 return ctx.go('default')
             })
-            .catch(function (error) {
+         .catch(function (error) {
                 ctx.sendMessage('server currently down')
                 return ctx.go('default')
             })

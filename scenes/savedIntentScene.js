@@ -11,10 +11,10 @@ const Markup = require('telegraf/markup');
 
 // GET STORED USER INTENT FROM THE PROCCESOR
 savedIntentScene.enter((ctx) => {
-    axios.get('http://8cee9d9c.ngrok.io/processor/v1/userIntents/' +  ctx.session.contact_number )
+    axios.get('http://36ab43a2.ngrok.io/processor/v1/userIntents/' +  ctx.session.contact_number )
         .then(response => {
 
-            if (response.data.exists === true) {
+            if (ctx.session.contact_number === null) {
                 console.log("[+] The user exists in database");
                 ctx.session.contact_number = response.data.msdin
             }
@@ -23,9 +23,8 @@ savedIntentScene.enter((ctx) => {
                
             }
 
-            
             console.log(response.data);
-            ctx.reply (response.data.exists);
+            ctx.reply (response.data);
            
 
     //        ctx.reply('Would you like to do something else?', Markup
@@ -41,9 +40,10 @@ savedIntentScene.enter((ctx) => {
     // )
 
         })
+        // .catch(err => console.log(err))
+        // ctx.reply('Ooops!!, the service is currently down please try again in 5 minutes'+ '\nTo go back to main menu press /start')  
 
 })
-//return JSON.parse(JSON.stringify(value))
 
 module.exports = savedIntentScene;
 
