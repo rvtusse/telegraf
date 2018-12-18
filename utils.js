@@ -18,7 +18,7 @@ function addUserDetails(ctx) {
     /*
         Posting data to the processor endpoint
     */
-    axios.post('http://560cd184.ngrok.io/processor/v1/saveUserDetails', userID)
+    axios.post('http://8cee9d9c.ngrok.io/processor/v1/saveUserDetails', userID)
         .then(function (response) {
             console.log(response.data);
         })
@@ -29,10 +29,12 @@ ADDING USER INTENT TO FIRESTORE AND CALLING IT TO GET INTENT SCENE
 */
 function addUserIntent(ctx) {
 
+ //ctx.session.contact_number = ctx.update.message.contact.phone_number;
+
     let userIntent = {
         msdin: ctx.session.contact_number,
         intent: ctx.session.intent.text,
-        telegram_id: ctx.update.message.chat.id
+        telegram_id: ctx.update.message.chat.id,
 
 
     }
@@ -44,7 +46,7 @@ function addUserIntent(ctx) {
     /*
     SEND USER INTENT TO SAVEUSER INTENTS END-POINT 
     */
-    axios.post('http://560cd184.ngrok.io/processor/v1/saveuserIntents', userIntent)
+    axios.post('http://8cee9d9c.ngrok.io/processor/v1/saveuserIntents', userIntent)
         .then(function (response) {
             console.log(response.data);
 

@@ -4,15 +4,16 @@ const Markup = require('telegraf/markup');
 const session = require('telegraf/session')
 const Stage = require('telegraf/stage')
 const Scene = require('telegraf/scenes/base')
+const app = require('express');
 const { leave } = Stage
 const getIntentScene = require('./scenes/getIntentScene');
 const savedIntentScene = require('./scenes/savedIntentScene');
 const registerScene = require('./scenes/registerScene');
 const engineScene = require('./scenes/engineScene');
-const promosScene = require('./scenes/promosScene');
+//const promoScene = require('./scenes/promoScene');
 const confirmationScene = require('./scenes/confirmationScene');
 const keyboardScene = require('./scenes/keyboardScene');
-const bot = new Telegraf("795833285:AAGBmXjnQMdNzS31jDP7eeHCDmEqpReqTF8");
+const bot = new Telegraf("729223214:AAGADaHQrPvZav3gmQOE37X-cAEdg7t1x30");
 var axios = require('axios');
 
 // Create scene manager
@@ -26,7 +27,7 @@ stage.command('cancel', leave())
 stage.register(getIntentScene);
 stage.register(registerScene);
 stage.register(engineScene);
-stage.register(promosScene);
+//stage.register(promoScene);
 stage.register(confirmationScene);
 stage.register(keyboardScene);
 stage.register(savedIntentScene);
@@ -40,11 +41,10 @@ bot.start(function (ctx) {
 
     //ctx.scene.enter('registerScene');
     ctx.reply("Y'ello! " + ctx.update.message.chat.first_name);
-    axios.get('http://560cd184.ngrok.io/processor/v1/userDetails/' + ctx.chat.id)
+    axios.get('http://8cee9d9c.ngrok.io/processor/v1/userDetails/' + ctx.chat.id)
         .then(response => {
             if (response.data.exists === true) {
                 console.log("[+] The user exists, routing to the default menu.");
-                console.log(response);
                 
                 ctx.session.contact_number = response.data.msdin
                 ctx.scene.enter('getIntentScene');
@@ -55,15 +55,18 @@ bot.start(function (ctx) {
                 console.log("[-] The user does not exist, routing to the registration scene.")
                 ctx.scene.enter('registerScene');
             }
-        });
+            
+        }).catch(err => console.log(err))
+        ctx.reply('Ooops!!, service is currently down , please try again in the next 5 minutes' + '\nTo go back to main menu press /start');
+     
     
-
 })
+
 
 bot.hears("Get Started!", ctx => ctx.scene.enter("getIntentScene"));
 bot.hears("Exit", ctx => ctx.reply("Bye  " +  ctx.update.message.chat.first_name));
 bot.hears('New Intent', ctx => ctx.scene.enter('getIntentScene'));
-bot.hears('Promos', ctx => ctx.scene.enter('promosScene'));
+//bot.hears('Promos', ctx => ctx.scene.enter('promoScene'));
 bot.hears('Yes', ctx => ctx.scene.enter('getIntentScene'));
 bot.hears('History', ctx => ctx.scene.enter('savedIntentScene'));
 //bot.hears('Yes', ctx => ctx.scene.enter('engineScene'));
