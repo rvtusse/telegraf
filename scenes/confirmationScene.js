@@ -1,3 +1,7 @@
+//LET USER KNOW HIS REQUEST HAS BEEN PROCESSED
+//CONFIRMING WHETHER OR NOT USER WANT TO DO ANOTHER TRANSACTION
+
+
 const Scene = require('telegraf/scenes/base')
 const Markup = require('telegraf/markup')
 const confirmationScene = new Scene('confirmationScene')
@@ -24,21 +28,12 @@ confirmationScene.enter(function (ctx) {
 
 
 
-// confirmationScene.on('yes', function (ctx) {
 
-//     console.log('Getting user intent..');
-
-//     //CAPTURE USER INPUT FROM THE KEYBOARD
-//     ctx.session.intent = ctx.message;
-
-//     //CALLING THE ISER INTENT FUNCTION FROM UTILS.JS FILE  
-//     addIntent.addUserIntent(ctx);
-//     console.log(ctx.session.intent);
 
 
   
 
-// });
+
 
 
 

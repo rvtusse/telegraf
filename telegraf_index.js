@@ -1,3 +1,5 @@
+//CHECK IF USER EXIST IN OUR DATABASE OR NOT
+
 const Telegraf = require('telegraf')
 const  tt = require("telegram-typings")
 const Markup = require('telegraf/markup');
@@ -34,11 +36,11 @@ stage.register(savedIntentScene);
 
 bot.use(session())
 bot.use(stage.middleware());
-// bot.command('greetingScene', (ctx) => ctx.scene.enter('greetingScene'));
+
 
 bot.start(function (ctx) {
 
-    //ctx.scene.enter('registerScene');
+   
     ctx.reply("Y'ello! " + ctx.update.message.chat.first_name);
     axios.get('http://36ab43a2.ngrok.io/processor/v1/userDetails/' + ctx.chat.id)
         .then(response => {
@@ -57,9 +59,10 @@ bot.start(function (ctx) {
             }
 
            
-        })
-        // .catch(err => console.log(err))
-        // ctx.reply('Ooops!!, the service is currently down please try again in 5 minutes'+ '\nTo go back to main menu press /start') 
+        }).catch(err => console.log(err))
+        ctx.reply('Ooops!!, the service is currently down please try again in 5 minutes'+ '\nTo go back to main menu press /start') 
+      
+     
        
 }) 
 

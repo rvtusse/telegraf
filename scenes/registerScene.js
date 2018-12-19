@@ -1,3 +1,7 @@
+//GETTING USER PHONE NUMBER TO REGISTER
+
+
+
 const Scene = require('telegraf/scenes/base')
 const Markup = require('telegraf/markup');
 const registerScene = new Scene('registerScene')

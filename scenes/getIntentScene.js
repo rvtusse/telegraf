@@ -1,6 +1,7 @@
 
-//GET INTENT SECENE 
-//WHAT EVER USER TYPES / REQUEST WE SEND IT TO ENGINE SCENE(HERVER)
+//GET USER INTENT 
+//STORE USER INTENT ON FIREBASE
+
 
 const Scene = require('telegraf/scenes/base')
 const Markup = require('telegraf/markup');
@@ -19,10 +20,6 @@ getIntentScene.enter(function (ctx) {
 getIntentScene.on('message', function (ctx) {
 
     console.log('Getting user intent..');
-
-    //Capture user input from keyboard
-    // ctx.session.contact_number = ctx.update.message.contact.phone_number;
-    // ctx.session.contact_number = response.data.msdin
     ctx.session.chatid = ctx.update.message.chat.id
     ctx.session.intent = ctx.message;
     console.log(ctx.session.contact_number)
