@@ -45,8 +45,9 @@ bot.start(function (ctx) {
         .then(response => {
             if (response.data.exists === true) {
                 console.log("[+] The user exists, routing to the default menu.");
+                console.log(response.data.msidn)
                 
-                ctx.session.contact_number = response.data.msdin
+                ctx.session.contact_number = response.data.msidn
                 ctx.scene.enter('getIntentScene');
 
                 
@@ -58,9 +59,9 @@ bot.start(function (ctx) {
 
            
         })
-        
-        .catch(err => console.log(err))
-        ctx.reply('Ooops!!, the service is currently down please try again in 5 minutes'+ '\nTo go back to main menu press /start') 
+
+        // .catch(err => console.log(err))
+        // ctx.reply('Ooops!!, the service is currently down please try again in 5 minutes'+ '\nTo go back to main menu press /start') 
        
 }) 
 

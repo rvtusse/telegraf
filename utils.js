@@ -8,7 +8,7 @@ function addUserDetails(ctx) {
     */
 
     let userID = {
-        msdin: ctx.session.contact_number,
+        msidn: ctx.session.contact_number,
         telegram_id: ctx.update.message.chat.id,
         first_name: ctx.update.message.chat.first_name,
         last_name: ctx.update.message.chat.last_name
@@ -32,7 +32,7 @@ function addUserIntent(ctx) {
  //ctx.session.contact_number = ctx.update.message.contact.phone_number;
 
     let userIntent = {
-        msdin: ctx.session.contact_number,
+        msidn: ctx.session.contact_number,
         intent: ctx.session.intent.text,
         telegram_id: ctx.update.message.chat.id,
 
