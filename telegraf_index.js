@@ -6,7 +6,6 @@ const Markup = require('telegraf/markup');
 const session = require('telegraf/session')
 const Stage = require('telegraf/stage')
 const Scene = require('telegraf/scenes/base')
-const app = require('express');
 const { leave } = Stage
 const getIntentScene = require('./scenes/getIntentScene');
 const savedIntentScene = require('./scenes/savedIntentScene');
@@ -36,15 +35,6 @@ stage.register(savedIntentScene);
 
 
 bot.use(session())
-//CHAT ACTION TYPING 
-bot.use({
-    botbuilder: function (session, next) {
-        session.send();
-        session.sendTyping();
-        next();
-    }
-});
-
 bot.use(stage.middleware());
 
 bot.start(function (ctx) {
