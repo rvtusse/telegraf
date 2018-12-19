@@ -1,3 +1,7 @@
+//GETTING USER PHONE NUMBER TO REGISTER
+
+
+
 const Scene = require('telegraf/scenes/base')
 const Markup = require('telegraf/markup');
 const registerScene = new Scene('registerScene')
@@ -11,7 +15,11 @@ registerScene.enter(function (ctx) {
             .keyboard([
                 markup.contactRequestButton('Share your mobile number'),
             ])
+            
     }));
+
+     //TRYING THE CHAT ACTION TYPING 
+     bot.api.sendChatAction(chat_id=chat_id, action=telegram.ChatAction.TYPING)
 });
 
 

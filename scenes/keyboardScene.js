@@ -1,3 +1,4 @@
+//KEYBOARD ROOTING TO USER OPTION
 
 const Scene = require('telegraf/scenes/base');
 const Markup = require('telegraf/markup');
@@ -11,27 +12,30 @@ keyboardScene.enter(function (ctx) {
             ['History'],
             ['Promos'],
             ['Exit']
-          
+
         ])
         .oneTime()
         .resize()
         .extra()
     )
+    
 });
 
 //GET USER INTENT FROM KEYBOARD 
 keyboardScene.on('message', function (ctx) {
-
     console.log('Getting user intent..');
 
     //CAPTURE USER INPUT FROM THE KEYBOARD
     ctx.session.intent = ctx.message;
 
-    //CALLING THE USER INTENT FUNCTION FROM UTILS.JS FILE  
+
+   
+
+    //CALLING THE USER INTENT FUNCTION FROM UTILS.JS 
     addIntent.addUserIntent(ctx);
     console.log(ctx.session.intent);
     bot.hears('Promos', ctx => ctx.scene.enter('promoScene'));
-   
+
 
 })
 module.exports = keyboardScene;

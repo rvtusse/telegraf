@@ -1,4 +1,4 @@
-
+//HAVE TWO FUNCTIONS, addUserDetails AND addUserIntent
 
 const axios = require('axios');
 
@@ -46,7 +46,7 @@ function addUserIntent(ctx) {
     /*
     SEND USER INTENT TO SAVEUSER INTENTS END-POINT 
     */
-    axios.post('http://36ab43a2.ngrok.io/processor/v1/saveuserIntents', userIntent)
+    axios.post('https://processor-module.firebaseapp.com/processor/v1/saveuserIntents', userIntent)
         .then(function (response) {
             console.log(response.data);
 
