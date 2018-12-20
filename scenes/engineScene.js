@@ -51,7 +51,7 @@ engineScene.on('message' , (ctx) => {
         userMsidsn: ctx.session.contact_number,
         pdu: 'USSRC'
     }
-    //Hardcodede for now
+    //Hardcoded for now
     // let startingMenu = {
     //     STRING : '*121#',
     //     MSIDN : ctx.session.contact_number,

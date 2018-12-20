@@ -25,9 +25,9 @@ getIntentScene.on('message', function (ctx) {
     console.log(ctx.session.contact_number)
     addIntent.addUserIntent(ctx);
 
-    console.log(ctx.session.intent);
+    //console.log(ctx.session.intent);
 
-    ctx.scene.enter('confirmationScene');
+    ctx.scene.enter('engineScene');
 
 })
 
