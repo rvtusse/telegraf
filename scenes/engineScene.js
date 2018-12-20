@@ -56,15 +56,26 @@ engineScene.on('message' , (ctx) => {
         ctx.reply(error)
         ctx.reply('press start /start')
     })
-   
-    
+    // .then((Response) => {
+    //     //Hardcodede for now
+    //     let msgPDU = {
+    //         STRING : `${ctx.message.chat.text}`,
+    //         MSIDN : ctx.session.contact_number,
+    //         PDU : 'USSRC'
+
+    //     }
+
+    //     axios.post('http://050f26ce.ngrok.io/processor/v1/actionRequest' ,msgPDU)
+    //     .then((Response) => {
+    //         console.log(Response.data)
+    //     })
+    // })
+
+
 })
 
 
 
-
-
- 
 
 
 module.exports = engineScene;
