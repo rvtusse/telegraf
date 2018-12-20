@@ -14,7 +14,7 @@ function addUserDetails(ctx) {
         last_name: ctx.update.message.chat.last_name
     }
     console.log(userID);
-    a
+    
     /*
         Posting data to the processor endpoint
     */

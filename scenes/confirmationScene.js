@@ -27,8 +27,10 @@ confirmationScene.enter(function (ctx) {
 
 
 
-
-
+confirmationScene.hears('No', function(ctx) {
+    ctx.reply("Bye " +  ctx.update.message.chat.first_name + '\nTo go back to main menu press /start')
+})
+confirmationScene.hears('Yes', ctx => ctx.scene.enter('defaultmenuScene'));
 
 
   

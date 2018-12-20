@@ -8,7 +8,7 @@ const addIntent = require('../utils');
 
 
 defaultmenuScene.enter(function (ctx) {
-    ctx.reply('Choose your option below ', Markup
+    ctx.reply('Choose your option below or type what you would like to do', Markup
         .keyboard([
             ['History'],
             ['Promos'],
@@ -24,6 +24,10 @@ defaultmenuScene.enter(function (ctx) {
 defaultmenuScene.hears('Promos', ctx => ctx.scene.enter('promoScene')); 
 
 defaultmenuScene.hears('History', ctx => ctx.scene.enter('savedIntentScene'));
+
+defaultmenuScene.hears("Exit", ctx => ctx.reply("Bye " +  ctx.update.message.chat.first_name +", see yah.." + "\nTo go back to main menu press /start"));
+
+defaultmenuScene.hears('/start', ctx => ctx.scene.enter('defaultmenuScene'));
 
 defaultmenuScene.on('message', function (ctx) {
     console.log('Getting user intent..');

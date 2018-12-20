@@ -80,27 +80,13 @@ bot.hears('New Intent', ctx => ctx.scene.enter('getIntentScene'));
 bot.hears('Promos', ctx => ctx.scene.enter('promoScene'));
 bot.hears('Yes', ctx => ctx.scene.enter('getIntentScene'));
 bot.hears('History', ctx => ctx.scene.enter('savedIntentScene'));
-bot.hears('Yes', ctx => ctx.scene.enter('engineScene'));
+bot.hears('Yes', ctx => ctx.scene.enter('defaultScene'));
 bot.hears("No", ctx => ctx.reply("Bye  " +  ctx.update.message.chat.first_name + '\nTo go back to main menu press /start'));
 
-confirmationScene.hears('Yes', function(ctx) {
-    ctx.reply('Would you like to do something else?', Markup
-        .keyboard([
-            ['History'],
-            ['Promos'],
-            ['exit']
-          
-        ])
-        .oneTime()
-        .resize()
-        .extra()
-    )
-})
 
 
-confirmationScene.hears('No', function(ctx) {
-    ctx.reply("Bye  " +  ctx.update.message.chat.first_name + '\nTo go back to main menu press /start')
-})
+
+
 
 bot.startPolling()
 
