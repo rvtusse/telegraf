@@ -33,8 +33,11 @@ savedIntentScene.enter((ctx) => {
         //ERROR HANDLING
         // .catch(err => console.log(err))
         // ctx.reply('Ooops!!, the service is currently down please try again in 5 minutes'+ '\nTo go back to main menu press /start')  
-
+        ctx.reply('\nTo go back to main menu press /start')
 })
+ 
+    
+    
 
 module.exports = savedIntentScene;
 

@@ -3,6 +3,7 @@
 const Scene = require('telegraf/scenes/base');
 const Markup = require('telegraf/markup');
 const defaultmenuScene = new Scene('defaultmenuScene');
+const Extra = require('telegraf/extra')
 const addIntent = require('../utils');
 
 
@@ -38,4 +39,6 @@ defaultmenuScene.on('message', function (ctx) {
     console.log(ctx.session.intent);
     ctx.scene.enter('confirmationScene')
 })
+
+
 module.exports = defaultmenuScene;
