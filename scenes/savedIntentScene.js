@@ -16,23 +16,9 @@ savedIntentScene.enter((ctx) => {
         .then(response => {
             ctx.session.contact_number = response.data.msidn
             ctx.reply (response.data.intents);
-<<<<<<< HEAD
-            console.log(response.data.intents);
-           
-
-    //        ctx.reply('Would you like to do something else?', Markup
-    //         .keyboard([
-    //          [response.data],
-    //         ])
-    //         .oneTime()
-    //         .resize()
-    //         .extra()
-    // )
-=======
             console.log(response.data.intents)
            
 
->>>>>>> 9f94613cd2224b92094e9d882cb7525f90f1494d
         })
         //ERROR HANDLING
         // .catch(err => console.log(err))
