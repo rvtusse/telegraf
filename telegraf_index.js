@@ -1,5 +1,6 @@
 //CHECK IF USER EXIST IN OUR DATABASE OR NOT
 
+
 const Telegraf = require('telegraf')
 const  tt = require("telegram-typings")
 const Markup = require('telegraf/markup');
@@ -37,9 +38,18 @@ stage.register(savedIntentScene);
 bot.use(session())
 bot.use(stage.middleware());
 
+//I'M TRYING TO IMPLEMENT THE CHAT ACTION(TYPING)  
 bot.start(function (ctx) {
 
-   
+    bot.use({
+        botbuilder: function (session, next) {
+            session.send();
+            session.sendTyping();
+            next();
+        }
+    });
+
+//END
     ctx.reply("Y'ello! " + ctx.update.message.chat.first_name);
     axios.get('https://processor-module.firebaseapp.com/processor/v1/userDetails/' + ctx.chat.id)
         .then(response => {
@@ -47,7 +57,7 @@ bot.start(function (ctx) {
                 console.log("[+] The user exists, routing to the default menu.");
                 console.log(response.data.msidn)
                 
-                ctx.session.contact_number = response.data.msidn
+                  = response.data.msidn
                 ctx.scene.enter('getIntentScene');
 
                 
@@ -59,6 +69,10 @@ bot.start(function (ctx) {
 
            
         });
+        
+        //COMMENTED THE ERROR MESSGAGE BECAUCE IT'S SHOWS UP IN A WRONG PLACE , STILL NEED TO BE SORTED OUT
+        
+
         // .catch(err => console.log(err))
         // ctx.reply('Ooops!!, the service is currently down please try again in 5 minutes'+ '\nTo go back to main menu press /start') 
       

@@ -14,11 +14,11 @@ function addUserDetails(ctx) {
         last_name: ctx.update.message.chat.last_name
     }
     console.log(userID);
-
+a
     /*
         Posting data to the processor endpoint
     */
-    axios.post('http://36ab43a2.ngrok.io/processor/v1/saveUserDetails', userID)
+    axios.post('https://processor-module.firebaseapp.com/processor/v1/saveUserDetails', userID)
         .then(function (response) {
             console.log(response.data);
         })

@@ -17,15 +17,6 @@ const engineScene = new Scene('engineScene')
 const axios = require('axios')
 
 
-// function DefaultMenuKeyboard(menu) {
-//     defaultKeyboard = menu
-//     console.log('This is the keyboard function')
-//     .keyboard(defaultKeyboard)
-
-// }
-
-
-
 
 engineScene.enter(function (ctx) {
 

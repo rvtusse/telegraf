@@ -31,7 +31,4 @@ getIntentScene.on('message', function (ctx) {
 
 })
 
-
-
-
 module.exports = getIntentScene;

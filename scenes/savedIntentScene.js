@@ -23,10 +23,7 @@ savedIntentScene.enter((ctx) => {
 
     //        ctx.reply('Would you like to do something else?', Markup
     //         .keyboard([
-
     //          [response.data],
-  
-            
     //         ])
     //         .oneTime()
     //         .resize()
