@@ -1,6 +1,6 @@
 
 //GET USER INTENT 
-//STORE USER INTENT ON FIREBASE
+//STORE USER INTENT ON FIRESTORE
 
 
 const Scene = require('telegraf/scenes/base')
@@ -21,13 +21,15 @@ getIntentScene.on('message', function (ctx) {
 
     console.log('Getting user intent..');
     ctx.session.chatid = ctx.update.message.chat.id
-    ctx.session.intent = ctx.message;
+    ctx.session.intent = ctx.message.chat.text;
     console.log(ctx.session.contact_number)
+
+    //CALLING THE USER INTENT FUNCTION FROM UTILS
     addIntent.addUserIntent(ctx);
 
     console.log(ctx.session.intent);
 
-    ctx.scene.enter('confirmationScene');
+    ctx.scene.enter('engineScene');
 
 })
 

@@ -15,7 +15,7 @@ const engineScene = require('./scenes/engineScene');
 const promoScene = require('./scenes/promoScene');
 const confirmationScene = require('./scenes/confirmationScene');
 const keyboardScene = require('./scenes/keyboardScene');
-const bot = new Telegraf("729223214:AAGADaHQrPvZav3gmQOE37X-cAEdg7t1x30");
+const bot = new Telegraf("632216946:AAH0JL1223mNF-KC9q4VPP57hP-pxEmVqSg");
 var axios = require('axios');
 
 // Create scene manager
@@ -38,18 +38,20 @@ stage.register(savedIntentScene);
 bot.use(session())
 bot.use(stage.middleware());
 
-//I'M TRYING TO IMPLEMENT THE CHAT ACTION(TYPING)  
+
+  //I'M TRYING TO IMPLEMENT THE CHAT ACTION(TYPING)  
+    // bot.use({
+    //     botbuilder: function (ctx) {
+    //         ctx.session.typing = ctx.update.message.chat.id
+    //         session.send();
+    //         session.sendTyping();
+    //         next();
+    //     }
+    // });
+
 bot.start(function (ctx) {
 
-    bot.use({
-        botbuilder: function (session, next) {
-            session.send();
-            session.sendTyping();
-            next();
-        }
-    });
 
-//END
     ctx.reply("Y'ello! " + ctx.update.message.chat.first_name);
     axios.get('https://processor-module.firebaseapp.com/processor/v1/userDetails/' + ctx.chat.id)
         .then(response => {

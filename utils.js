@@ -14,7 +14,7 @@ function addUserDetails(ctx) {
         last_name: ctx.update.message.chat.last_name
     }
     console.log(userID);
-a
+    a
     /*
         Posting data to the processor endpoint
     */
@@ -25,15 +25,14 @@ a
 
 }
 /*
-ADDING USER INTENT TO FIRESTORE AND CALLING IT TO GET INTENT SCENE
+ADDING USER INTENT TO FIRESTORE AND CALLING IT TO (GET_INTENT_SCENE)
 */
 function addUserIntent(ctx) {
 
- //ctx.session.contact_number = ctx.update.message.contact.phone_number;
 
     let userIntent = {
         msidn: ctx.session.contact_number,
-        intent: ctx.session.intent.text,
+        intent: ctx.session.intent,
         telegram_id: ctx.update.message.chat.id,
 
 
@@ -42,7 +41,6 @@ function addUserIntent(ctx) {
     CONSOLE THE USER INPUT / TEXT TYPED ON THE KEYBOARD
     */
     console.log(userIntent.text);
-
     /*
     SEND USER INTENT TO SAVEUSER INTENTS END-POINT 
     */

@@ -18,39 +18,49 @@ const axios = require('axios')
 
 
 
-engineScene.enter(function (ctx) {
-
-    axios.get('https://processor-module.firebaseapp.com/processor/v1/userDetails/' + ctx.session.intent)
-        .then(response => {
-            if (response.data.exists === true) {
-                console.log("[+] The user exist.");
-                ctx.session.contact_number = response.data.intent
-                ctx.scene.enter('savedIntentScene');
-
-            }
-            else {
-
-                console.log("[-] The user does not exist.")
-                axios.get('https://processor-module.firebaseapp.com/processor/v1/userIntents/' + ctx.session.contact_number)      // display default menu from the wasps using axios.get
-                .then(response => {
-        
-                    //CALLING KEYBOARD FUNCTION
-                    // DefaultMenuKeyboard(response.data)
-                    console.log(response.data);
-                   
-        
-                })
-
-        
-            }
 
 
+engineScene.on('message', (ctx) => {
+    console.log(`user inputed ${ctx.message.chat.text}`)
+    // let userRequest = {
+    //     userKeyStrokes : ctx.message,
+    //     userMsidsn: ctx.session.contact_number,
+    //     pdu: 'ussrrc'
+    // }
+    //Hardcodede for now
+    let startingMenu = {
+        STRING: '*121#',
+        MSIDN: ctx.session.contact_number,
+        PDU: 'PSSRR'
+
+    }
+
+    axios.post('http://050f26ce.ngrok.io/processor/v1/actionRequest', startingMenu)
+        .then((response) => {
+            ctx.reply(response.data.STRING)
         })
 
+        
+    // .then((Response) => {
+    //     //Hardcodede for now
+    //     let msgPDU = {
+    //         STRING : `${ctx.message.chat.text}`,
+    //         MSIDN : ctx.session.contact_number,
+    //         PDU : 'USSRC'
 
- });
+    //     }
 
- 
+    //     axios.post('http://050f26ce.ngrok.io/processor/v1/actionRequest' ,msgPDU)
+    //     .then((Response) => {
+    //         console.log(Response.data)
+    //     })
+    // })
+
+
+})
+
+
+
 
 
 module.exports = engineScene;

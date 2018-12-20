@@ -10,9 +10,6 @@ const Extra = require('telegraf/extra')
 const Markup = require('telegraf/markup');
 
 
-
-
-
 // GET STORED USER INTENT FROM THE PROCCESOR
 savedIntentScene.enter((ctx) => {
     axios.get('https://processor-module.firebaseapp.com/processor/v1/userIntents/' +  ctx.session.contact_number )
@@ -29,7 +26,6 @@ savedIntentScene.enter((ctx) => {
     //         .resize()
     //         .extra()
     // )
-
         })
         //ERROR HANDLING
         .catch(err => console.log(err))
