@@ -51,7 +51,6 @@ bot.use(stage.middleware());
 
 bot.start(function (ctx) {
 
-
     ctx.reply("Y'ello! " + ctx.update.message.chat.first_name);
     axios.get('https://processor-module.firebaseapp.com/processor/v1/userDetails/' + ctx.chat.id)
         .then(response => {
@@ -59,7 +58,7 @@ bot.start(function (ctx) {
                 console.log("[+] The user exists, routing to the default menu.");
                 console.log(response.data.msidn)
                 
-                  = response.data.msidn
+                 ctx.session.contact_number = response.data.msidn
                 ctx.scene.enter('getIntentScene');
 
                 
@@ -68,7 +67,6 @@ bot.start(function (ctx) {
                 console.log("[-] The user does not exist, routing to the registration scene.")
                 ctx.scene.enter('registerScene');
             }
-
            
         });
         

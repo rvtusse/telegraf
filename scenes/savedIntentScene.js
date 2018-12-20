@@ -15,7 +15,8 @@ savedIntentScene.enter((ctx) => {
     axios.get('https://processor-module.firebaseapp.com/processor/v1/userIntents/' +  ctx.session.contact_number )
         .then(response => {
             ctx.session.contact_number = response.data.msidn
-            ctx.reply (response.data);
+            ctx.reply (response.data.intents);
+            console.log(response.data.intents);
            
 
     //        ctx.reply('Would you like to do something else?', Markup

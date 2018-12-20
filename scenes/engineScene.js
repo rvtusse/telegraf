@@ -20,27 +20,48 @@ const axios = require('axios')
 
 
 
-engineScene.on('message', (ctx) => {
-    console.log(`user inputed ${ctx.message.chat.text}`)
-    // let userRequest = {
-    //     userKeyStrokes : ctx.message,
-    //     userMsidsn: ctx.session.contact_number,
-    //     pdu: 'ussrrc'
-    // }
-    //Hardcodede for now
+
+engineScene.enter((ctx) => {
     let startingMenu = {
-        STRING: '*121#',
-        MSIDN: ctx.session.contact_number,
-        PDU: 'PSSRR'
+        STRING : '*121#',
+        MSIDN : ctx.session.contact_number,
+        PDU : 'PSSRR'
 
     }
 
-    axios.post('http://050f26ce.ngrok.io/processor/v1/actionRequest', startingMenu)
-        .then((response) => {
-            ctx.reply(response.data.STRING)
-        })
-
         
+    
+        axios.post('http://039997ce.ngrok.io/processor/v1/actionRequest' ,startingMenu)
+        .then((Response) => {
+           console.log(Response.data)
+           ctx.reply(Response.data.STRING)
+        })
+})
+
+
+engineScene.on('message' , (ctx) => {
+    console.log(`user inputed ${ctx.message.chat.text}`)
+    let userRequest = {
+        userKeyStrokes : ctx.message,
+        userMsidsn: ctx.session.contact_number,
+        pdu: 'USSRC'
+    }
+    //Hardcodede for now
+    // let startingMenu = {
+    //     STRING : '*121#',
+    //     MSIDN : ctx.session.contact_number,
+    //     PDU : 'PSSRR'
+
+    // }
+
+    axios.post('http://039997ce.ngrok.io/processor/v1/actionRequest' ,userRequest)
+    .then((response) =>{
+        ctx.reply(response.data.STRING)
+    })
+    .catch(error => {
+        ctx.reply(error)
+        ctx.reply('press start /start')
+    })
     // .then((Response) => {
     //     //Hardcodede for now
     //     let msgPDU = {
