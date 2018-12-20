@@ -17,10 +17,13 @@ const Markup = require('telegraf/markup');
 savedIntentScene.enter((ctx) => {
     axios.get('https://processor-module.firebaseapp.com/processor/v1/userIntents/' +  ctx.session.contact_number )
         .then(response => {
+            for(var index = 0; index < response.data.intents.length; index++) {
+                console.log(index + ' ' +  response.data.intents[index]);
+          
             ctx.session.contact_number = response.data.msidn
-            ctx.reply (response.data.intents);
+            ctx.reply (index + ' ' + response.data.intents[index]);
             console.log(response.data.intents)
-           
+        }
 
         })
         //ERROR HANDLING
