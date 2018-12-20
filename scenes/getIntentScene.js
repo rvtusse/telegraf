@@ -21,7 +21,7 @@ getIntentScene.on('message', function (ctx) {
 
     console.log('Getting user intent..');
     ctx.session.chatid = ctx.update.message.chat.id
-    ctx.session.intent = ctx.message.chat.text;
+    ctx.session.intent = ctx.message;
     console.log(ctx.session.contact_number)
     addIntent.addUserIntent(ctx);
 

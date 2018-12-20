@@ -19,6 +19,7 @@ savedIntentScene.enter((ctx) => {
         .then(response => {
             ctx.session.contact_number = response.data.msidn
             ctx.reply (response.data.intents);
+            console.log(response.data.intents)
            
 
         })
