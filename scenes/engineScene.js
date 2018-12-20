@@ -47,9 +47,9 @@ engineScene.enter((ctx) => {
 engineScene.on('message' , (ctx) => {
     console.log(`user inputed ${ctx.message.chat.text}`)
     let userRequest = {
-        userKeyStrokes : ctx.message,
-        userMsidsn: ctx.session.contact_number,
-        pdu: 'USSRC'
+        STRING : ctx.message.text,
+        MSIDN: ctx.session.contact_number,
+        PDU: 'USSRC'
     }
     //Hardcodede for now
     // let startingMenu = {
