@@ -21,22 +21,10 @@ savedIntentScene.enter((ctx) => {
             ctx.reply (response.data.intents);
            
 
-    //        ctx.reply('Would you like to do something else?', Markup
-    //         .keyboard([
-
-    //          [response.data],
-  
-            
-    //         ])
-    //         .oneTime()
-    //         .resize()
-    //         .extra()
-    // )
-
         })
         //ERROR HANDLING
-        .catch(err => console.log(err))
-        ctx.reply('Ooops!!, the service is currently down please try again in 5 minutes'+ '\nTo go back to main menu press /start')  
+        // .catch(err => console.log(err))
+        // ctx.reply('Ooops!!, the service is currently down please try again in 5 minutes'+ '\nTo go back to main menu press /start')  
 
 })
 
