@@ -19,16 +19,17 @@ savedIntentScene.enter((ctx) => {
           
             ctx.session.contact_number = response.data.msidn
             ctx.reply (index + ' ' + response.data.intents[index]);
-
+       
             console.log(response.data.intents);
+           // ctx.reply('To go back to main menu press /start);
            
-
  
             console.log(response.data.intents)
         }
 
 
         })
+      
         //ERROR HANDLING
         // .catch(err => console.log(err))
         // ctx.reply('Ooops!!, the service is currently down please try again in 5 minutes'+ '\nTo go back to main menu press /start')  

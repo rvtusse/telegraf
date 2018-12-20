@@ -13,8 +13,8 @@ const savedIntentScene = require('./scenes/savedIntentScene');
 const registerScene = require('./scenes/registerScene');
 const engineScene = require('./scenes/engineScene');
 const promoScene = require('./scenes/promoScene');
+const defaultmenuScene = require('./scenes/defaultmenuScene');
 const confirmationScene = require('./scenes/confirmationScene');
-//const keyboardScene = require('./scenes/keyboardScene');
 const bot = new Telegraf("655177495:AAGCF6r1PpWsjB2YHtE7bsmA9ve3Az2I7NU");
 var axios = require('axios');
 
@@ -31,23 +31,13 @@ stage.register(registerScene);
 stage.register(engineScene);
 stage.register(promoScene);
 stage.register(confirmationScene);
-//stage.register(keyboardScene);
+stage.register(defaultmenuScene);
 stage.register(savedIntentScene);
 
 
 bot.use(session())
 bot.use(stage.middleware());
 
-
-  //I'M TRYING TO IMPLEMENT THE CHAT ACTION(TYPING)  
-    // bot.use({
-    //     botbuilder: function (ctx) {
-    //         ctx.session.typing = ctx.update.message.chat.id
-    //         session.send();
-    //         session.sendTyping();
-    //         next();
-    //     }
-    // });
 
 bot.start(function (ctx) {
 
@@ -59,7 +49,7 @@ bot.start(function (ctx) {
                 console.log(response.data.msidn)
                 
                  ctx.session.contact_number = response.data.msidn
-                ctx.scene.enter('getIntentScene');
+                ctx.scene.enter('defaultmenuScene');
 
                 
             }
@@ -107,9 +97,10 @@ confirmationScene.hears('Yes', function(ctx) {
     )
 })
 
-bot.startPolling()
-
 
 confirmationScene.hears('No', function(ctx) {
     ctx.reply("Bye  " +  ctx.update.message.chat.first_name + '\nTo go back to main menu press /start')
 })
+
+bot.startPolling()
+
