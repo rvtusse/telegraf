@@ -18,7 +18,7 @@ function addUserDetails(ctx) {
     /*
         Posting data to the processor endpoint
     */
-    axios.post('http://36ab43a2.ngrok.io/processor/v1/saveUserDetails', userID)
+    axios.post('https://processor-module.firebaseapp.com/processor/v1/saveUserDetails', userID)
         .then(function (response) {
             console.log(response.data);
         })
@@ -33,7 +33,7 @@ function addUserIntent(ctx) {
 
     let userIntent = {
         msidn: ctx.session.contact_number,
-        intent: ctx.session.intent.text,
+        intent: ctx.session.intent,
         telegram_id: ctx.update.message.chat.id,
 
 

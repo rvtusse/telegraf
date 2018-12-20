@@ -21,13 +21,13 @@ getIntentScene.on('message', function (ctx) {
 
     console.log('Getting user intent..');
     ctx.session.chatid = ctx.update.message.chat.id
-    ctx.session.intent = ctx.message;
+    ctx.session.intent = ctx.message.chat.text;
     console.log(ctx.session.contact_number)
     addIntent.addUserIntent(ctx);
 
     console.log(ctx.session.intent);
 
-    ctx.scene.enter('confirmationScene');
+    ctx.scene.enter('engineScene');
 
 })
 
