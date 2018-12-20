@@ -15,8 +15,6 @@ registerScene.enter(function (ctx) {
             ])
     }));
 
-     //TRYING THE CHAT ACTION TYPING 
-    //  bot.sendChatAction(chat_id=chat_id, action=telegram.ChatAction.TYPING)
 });
 
 

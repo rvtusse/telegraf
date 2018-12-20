@@ -33,7 +33,7 @@ function addUserIntent(ctx) {
 
     let userIntent = {
         msidn: ctx.session.contact_number,
-        intent: ctx.session.intent,
+        intent: ctx.session.intent.text,
         telegram_id: ctx.update.message.chat.id,
 
 
