@@ -15,7 +15,7 @@ const engineScene = require('./scenes/engineScene');
 const promoScene = require('./scenes/promoScene');
 const defaultmenuScene = require('./scenes/defaultmenuScene');
 const confirmationScene = require('./scenes/confirmationScene');
-const bot = new Telegraf("655177495:AAGCF6r1PpWsjB2YHtE7bsmA9ve3Az2I7NU");
+const bot = new Telegraf("730221015:AAGgNd7Iv-WV7oeYcgPj9gDdmvEoqx0WjhQ");
 var axios = require('axios');
 
 // Create scene manager

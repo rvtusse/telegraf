@@ -37,7 +37,16 @@ savedIntentScene.enter((ctx) => {
         ctx.reply('- To go back to main menu press /start')
 })
  
-    
+savedIntentScene.hears('0', ctx => ctx.reply('Your request has been processed' + '\nTo go back to main menu press /start'));  
+
+savedIntentScene.hears('1', ctx => ctx.reply('Your request has been processed' + '\nTo go back to main menu press /start')); 
+
+savedIntentScene.hears('2', ctx => ctx.reply('Your request has been processed' + '\nTo go back to main menu press /start'));   
+
+savedIntentScene.hears('3', ctx => ctx.reply('Your request has been processed' + '\nTo go back to main menu press /start')); 
+
+savedIntentScene.hears('4', ctx => ctx.reply('Your request has been processed' + '\nTo go back to main menu press /start')); 
+
 savedIntentScene.hears('/start', ctx => ctx.scene.enter('defaultmenuScene'));  
 
 module.exports = savedIntentScene;
