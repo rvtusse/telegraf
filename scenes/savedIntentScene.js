@@ -14,26 +14,31 @@ const Markup = require('telegraf/markup');
 savedIntentScene.enter((ctx) => {
     axios.get('https://processor-module.firebaseapp.com/processor/v1/userIntents/' +  ctx.session.contact_number )
         .then(response => {
-            for(var index = 0; index < response.data.intents.length; index++) {
-                console.log(index + ' ' +  response.data.intents[index]);
+            for(var i = 0; i < response.data.intents.length; i++) {
+                console.log(i + ' ' +  response.data.intents[i]);
           
             ctx.session.contact_number = response.data.msidn
-            ctx.reply (index + ' ' + response.data.intents[index]);
-
-            console.log(response.data.intents);
+            ctx.reply (i + ' - ' + response.data.intents[i]);
+       
+            console.log(i + ' ) ' + response.data.intents[i]);
+          
            
-
  
             console.log(response.data.intents)
         }
+        
 
 
         })
+      
         //ERROR HANDLING
         // .catch(err => console.log(err))
         // ctx.reply('Ooops!!, the service is currently down please try again in 5 minutes'+ '\nTo go back to main menu press /start')  
-
+        ctx.reply('- To go back to main menu press /start')
 })
+ 
+    
+savedIntentScene.hears('/start', ctx => ctx.scene.enter('defaultmenuScene'));  
 
 module.exports = savedIntentScene;
 

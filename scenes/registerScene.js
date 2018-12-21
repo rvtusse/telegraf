@@ -15,9 +15,7 @@ registerScene.enter(function (ctx) {
             ])
     }));
 
-     //TRYING THE CHAT ACTION TYPING not WORKING FOR NOW.
-
-    //  bot.sendChatAction(chat_id=chat_id, action=telegram.ChatAction.TYPING)
+     
 });
 
 
@@ -28,7 +26,7 @@ registerScene.on("contact", function (ctx) {
     ctx.reply("Thank you for registering your number with this Telegram profile!")
     addUser.addUserDetails(ctx);
     
-    ctx.scene.enter('getIntentScene');
+    ctx.scene.enter('getIntentScene')
 });
 
 module.exports = registerScene;

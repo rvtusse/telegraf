@@ -12,10 +12,11 @@ const axios = require('axios')
 const getIntentScene = new Scene('getIntentScene')
 getIntentScene.enter(function (ctx) {
     console.log("Entering the default scene.");
-    ctx.reply('Hey! ' + ctx.update.message.chat.first_name + ',' + ' what would you like to do now?');
+    ctx.reply('What would you like to do ?');
 
 
 });
+getIntentScene.hears('/start', ctx => ctx.scene.enter('defaultmenuScene'));
 
 getIntentScene.on('message', function (ctx) {
 
