@@ -50,7 +50,7 @@ engineScene.on('message' , (ctx) => {
     axios.post('https://processor-module.firebaseapp.com/processor/v1/actionRequest' ,userRequest)
     .then((response) =>{
         ctx.reply(response.data.STRING)
-        ctx.scene.enter('confirmationScene');
+        
     })
     .catch(error => {
         ctx.reply(error)
@@ -74,7 +74,9 @@ engineScene.on('message' , (ctx) => {
 
 })
 
-
+engineScene.hears("Exit", ctx => ctx.reply("Bye " +  ctx.update.message.chat.first_name  + "\nTo go back to main menu press /start"));
+engineScene.hears("Back", ctx => ctx.reply("Bye " +  ctx.update.message.chat.first_name  + "\nTo go back to main menu press /start"));
+engineScene.hears('/start', ctx => ctx.scene.enter('defaultmenuScene'));
 
 
 

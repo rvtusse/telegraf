@@ -15,7 +15,7 @@ const engineScene = require('./scenes/engineScene');
 const promoScene = require('./scenes/promoScene');
 const defaultmenuScene = require('./scenes/defaultmenuScene');
 const confirmationScene = require('./scenes/confirmationScene');
-const bot = new Telegraf("730221015:AAGgNd7Iv-WV7oeYcgPj9gDdmvEoqx0WjhQ");
+const bot = new Telegraf("729223214:AAGADaHQrPvZav3gmQOE37X-cAEdg7t1x30");
 var axios = require('axios');
 
 // Create scene manager
@@ -75,7 +75,7 @@ bot.start(function (ctx) {
  
 
 bot.hears("Get Started!", ctx => ctx.scene.enter("getIntentScene"));
-bot.hears("Exit", ctx => ctx.reply("Bye  " +  ctx.update.message.chat.first_name));
+defaultmenuScene.hears("Exit", ctx => ctx.reply("Bye " +  ctx.update.message.chat.first_name +", see yah.." + "\nTo go back to main menu press /start"));
 bot.hears('New Intent', ctx => ctx.scene.enter('getIntentScene'));
 bot.hears('Promos', ctx => ctx.scene.enter('promoScene'));
 bot.hears('Yes', ctx => ctx.scene.enter('getIntentScene'));
