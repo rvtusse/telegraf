@@ -30,13 +30,15 @@ engineScene.enter((ctx) => {
 
         
     
-        axios.post('https://processor-module.firebaseapp.com/processor/v1/actionRequest' ,startingMenu)
+        axios.post('http://da41ddb1.ngrok.io/processor/v1/actionRequest' ,startingMenu)
         .then((Response) => {
            console.log(Response.data)
            ctx.reply(Response.data.STRING)
         })
 })
-
+engineScene.hears("Exit", ctx => ctx.reply("Bye " +  ctx.update.message.chat.first_name  + "\nTo go back to main menu press /start"));
+engineScene.hears("Back", ctx => ctx.reply("Bye " +  ctx.update.message.chat.first_name  + "\nTo go back to main menu press /start"));
+engineScene.hears('/start', ctx => ctx.scene.enter('defaultmenuScene'));
 
 engineScene.on('message' , (ctx) => {
     console.log(`user inputed ${ctx.message.chat.text}`)
@@ -47,7 +49,7 @@ engineScene.on('message' , (ctx) => {
     }
   
 
-    axios.post('https://processor-module.firebaseapp.com/processor/v1/actionRequest' ,userRequest)
+    axios.post('http://da41ddb1.ngrok.io/processor/v1/actionRequest' ,userRequest)
     .then((response) =>{
         ctx.reply(response.data.STRING)
         
@@ -74,9 +76,7 @@ engineScene.on('message' , (ctx) => {
 
 })
 
-engineScene.hears("Exit", ctx => ctx.reply("Bye " +  ctx.update.message.chat.first_name  + "\nTo go back to main menu press /start"));
-engineScene.hears("Back", ctx => ctx.reply("Bye " +  ctx.update.message.chat.first_name  + "\nTo go back to main menu press /start"));
-engineScene.hears('/start', ctx => ctx.scene.enter('defaultmenuScene'));
+
 
 
 
