@@ -20,7 +20,6 @@ const axios = require('axios')
 
 
 
-
 engineScene.enter((ctx) => {
     let startingMenu = {
         STRING : '*121#',
@@ -46,17 +45,12 @@ engineScene.on('message' , (ctx) => {
         MSIDN: ctx.session.contact_number,
         PDU: 'USSRC'
     }
-    //Hardcodede for now
-    // let startingMenu = {
-    //     STRING : '*121#',
-    //     MSIDN : ctx.session.contact_number,
-    //     PDU : 'PSSRR'
-
-    // }
+  
 
     axios.post('http://039997ce.ngrok.io/processor/v1/actionRequest' ,userRequest)
     .then((response) =>{
         ctx.reply(response.data.STRING)
+        ctx.scene.enter('confirmationScene');
     })
     .catch(error => {
         ctx.reply(error)

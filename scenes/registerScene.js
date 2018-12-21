@@ -15,12 +15,9 @@ registerScene.enter(function (ctx) {
             ])
     }));
 
-<<<<<<< HEAD
      //TRYING THE CHAT ACTION TYPING not WORKING FOR NOW.
 
     //  bot.sendChatAction(chat_id=chat_id, action=telegram.ChatAction.TYPING)
-=======
->>>>>>> 9f94613cd2224b92094e9d882cb7525f90f1494d
 });
 
 

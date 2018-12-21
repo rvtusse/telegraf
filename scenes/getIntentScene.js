@@ -27,7 +27,7 @@ getIntentScene.on('message', function (ctx) {
     //CALLING THE USER INTENT FUNCTION FROM UTILS
     addIntent.addUserIntent(ctx);
 
-    console.log(ctx.session.intent);
+    //console.log(ctx.session.intent);
 
     ctx.scene.enter('confirmationScene');
 

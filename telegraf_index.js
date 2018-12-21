@@ -14,8 +14,8 @@ const registerScene = require('./scenes/registerScene');
 const engineScene = require('./scenes/engineScene');
 const promoScene = require('./scenes/promoScene');
 const confirmationScene = require('./scenes/confirmationScene');
-const keyboardScene = require('./scenes/keyboardScene');
-const bot = new Telegraf("632216946:AAH0JL1223mNF-KC9q4VPP57hP-pxEmVqSg");
+//const keyboardScene = require('./scenes/keyboardScene');
+const bot = new Telegraf("655177495:AAGCF6r1PpWsjB2YHtE7bsmA9ve3Az2I7NU");
 var axios = require('axios');
 
 // Create scene manager
@@ -31,7 +31,7 @@ stage.register(registerScene);
 stage.register(engineScene);
 stage.register(promoScene);
 stage.register(confirmationScene);
-stage.register(keyboardScene);
+//stage.register(keyboardScene);
 stage.register(savedIntentScene);
 
 
@@ -108,3 +108,8 @@ confirmationScene.hears('Yes', function(ctx) {
 })
 
 bot.startPolling()
+
+
+confirmationScene.hears('No', function(ctx) {
+    ctx.reply("Bye  " +  ctx.update.message.chat.first_name + '\nTo go back to main menu press /start')
+})
