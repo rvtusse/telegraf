@@ -14,6 +14,7 @@ const Markup = require('telegraf/markup');
 savedIntentScene.enter((ctx) => {
     axios.get('https://processor-module.firebaseapp.com/processor/v1/userIntents/' +  ctx.session.contact_number )
         .then(response => {
+console.log(response.data);
             for(var i = 0; i < response.data.intents.length; i++) {
                 console.log(i + ' ' +  response.data.intents[i]);
           

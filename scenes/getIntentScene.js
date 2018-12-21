@@ -30,7 +30,7 @@ getIntentScene.on('message', function (ctx) {
 
     //console.log(ctx.session.intent);
 
-    ctx.scene.enter('engineScene');
+    ctx.scene.enter('confirmationScene');
 
 })
 
