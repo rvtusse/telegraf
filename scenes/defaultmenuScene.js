@@ -33,7 +33,7 @@ defaultmenuScene.on('message', function (ctx) {
     console.log('Getting user intent..');
 
     //CAPTURE USER INPUT FROM THE KEYBOARD
-    ctx.session.intent = ctx.message;
+    ctx.session.intent = ctx.message.text;
 
 
 

@@ -57,6 +57,7 @@ engineScene.on('message' , (ctx) => {
     .catch(error => {
         ctx.reply(error)
         ctx.reply('press start /start')
+
     })
     // .then((Response) => {
     //     //Hardcodede for now
@@ -75,6 +76,23 @@ engineScene.on('message' , (ctx) => {
 
 
 })
+
+//STORING KEYSTROKE
+
+// bot.on('message', function (ctx) {
+//     console.log('Getting user intent..');
+//     ctx.session.intent = ctx.session.intent || '';
+//         ctx.session.intent += ctx.message.text + ', ' ;
+//         console.log(ctx.session.intent);
+//         ctx.reply(ctx.session.intent);
+    
+//         console.log('keystrokes saved'); 
+//     addIntent.addUserIntent(ctx);
+//     console.log(ctx.session.intent);
+    
+// })
+
+
 
 
 
