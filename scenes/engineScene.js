@@ -80,15 +80,15 @@ engineScene.on('message' , (ctx) => {
 //STORING KEYSTROKE
 
 // bot.on('message', function (ctx) {
-//     console.log('Getting user intent..');
-//     ctx.session.intent = ctx.session.intent || '';
-//         ctx.session.intent += ctx.message.text + ', ' ;
-//         console.log(ctx.session.intent);
-//         ctx.reply(ctx.session.intent);
+//     console.log('Getting user keystroke..');
+//     ctx.session.keystroke = ctx.session.keystroke || '';
+//         ctx.session.keystroke += ctx.message.text + ', ' ;
+//         console.log(ctx.session.keystroke);
+//         ctx.reply(ctx.session.keystroke);
     
 //         console.log('keystrokes saved'); 
 //     addIntent.addUserIntent(ctx);
-//     console.log(ctx.session.intent);
+//     console.log(ctx.session.keystroke);
     
 // })
 
