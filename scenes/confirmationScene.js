@@ -12,7 +12,7 @@ const addIntent = require('../utils');
 
 
 confirmationScene.enter(function (ctx) {
-    ctx.reply('Your request has been processed.')
+    ctx.reply( `Your request to "${ctx.message.text}" has been processed.`)
     ctx.reply('Would you like to do something else?', Markup
         .keyboard([
             ['Yes'],

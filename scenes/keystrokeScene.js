@@ -11,7 +11,7 @@ const keystrokeScene = new Scene('keystrokeScene')
 //STORING KEYSTROKE
 keystrokeScene.enter(function (ctx) {
     console.log("Enter scene.");
-    ctx.reply('ohh');
+    ctx.reply(`What do you mean by "${ctx.message.text}" ?`);
 
 
 });
@@ -31,7 +31,7 @@ keystrokeScene.on('message', function (ctx) {
         console.log('keystrokes saved'); 
     addIntent.addUserIntent(ctx);
     console.log(ctx.session.keystroke);
-    
+   ctx.enter.scene('confirmationScene') 
 })
 
 module.exports = keystrokeScene;

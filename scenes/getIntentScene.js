@@ -26,12 +26,12 @@ getIntentScene.on('message', function (ctx) {
     console.log(ctx.session.contact_number)
 
     //CALLING THE USER INTENT FUNCTION FROM UTILS
-    addIntent.addUserIntent(ctx);
+    //addIntent.addUserIntent(ctx);
 
     //console.log(ctx.session.intent);
 
-    ctx.scene.enter('engineScene');
-
+    ctx.scene.enter('keystrokeScene');
+   
 })
 
 module.exports = getIntentScene;

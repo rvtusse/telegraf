@@ -30,7 +30,7 @@ engineScene.enter((ctx) => {
 
         
     
-        axios.post('http://da41ddb1.ngrok.io/processor/v1/actionRequest' ,startingMenu)
+        axios.post('https://processor-module.firebaseapp.com/processor/v1/actionRequest' ,startingMenu)
         .then((Response) => {
            console.log(Response.data)
            ctx.reply(Response.data.STRING)
@@ -49,7 +49,7 @@ engineScene.on('message' , (ctx) => {
     }
   
 
-    axios.post('http://da41ddb1.ngrok.io/processor/v1/actionRequest' ,userRequest)
+    axios.post('https://processor-module.firebaseapp.com/processor/v1/actionRequest' ,userRequest)
     .then((response) =>{
         ctx.reply(response.data.STRING)
         
@@ -59,20 +59,7 @@ engineScene.on('message' , (ctx) => {
         ctx.reply('press start /start')
 
     })
-    // .then((Response) => {
-    //     //Hardcodede for now
-    //     let msgPDU = {
-    //         STRING : `${ctx.message.chat.text}`,
-    //         MSIDN : ctx.session.contact_number,
-    //         PDU : 'USSRC'
-
-    //     }
-
-    //     axios.post('http://050f26ce.ngrok.io/processor/v1/actionRequest' ,msgPDU)
-    //     .then((Response) => {
-    //         console.log(Response.data)
-    //     })
-    // })
+ 
 
 
 })

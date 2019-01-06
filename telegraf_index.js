@@ -40,9 +40,10 @@ stage.register(savedIntentScene);
 bot.use(session())
 bot.use(stage.middleware());
 
-
 bot.start(function (ctx) {
-
+    ctx.reply("Hi i'm the MTN AI bot \nSay 'Hi' or 'Hello' to get started ")
+})
+bot.hears([/hello( there)?/i, /hey( there)?/i, /hi( there)?/i], function (ctx) {
     ctx.reply("Y'ello! " + ctx.update.message.chat.first_name);
     axios.get('https://processor-module.firebaseapp.com/processor/v1/userDetails/' + ctx.chat.id)
         .then(response => {
@@ -51,12 +52,12 @@ bot.start(function (ctx) {
                 console.log(response.data.msidn)
                 
                  ctx.session.contact_number = response.data.msidn
-                ctx.scene.enter('defaultmenuScene');
+                ctx.scene.enter('engineScene');
 
                 
             }
             else {
-                console.log("[-] The user does not exist, routing to the registration scene.")
+                console.log(ctx.chat.id)
                 ctx.scene.enter('registerScene');
             }
            
@@ -70,7 +71,8 @@ bot.start(function (ctx) {
       
      
        
-}) 
+}) ;
+
 
  
 
