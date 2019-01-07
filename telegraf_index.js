@@ -52,7 +52,7 @@ bot.hears([/hello( there)?/i, /hey( there)?/i, /hi( there)?/i], function (ctx) {
                 console.log(response.data.msidn)
                 
                  ctx.session.contact_number = response.data.msidn
-                ctx.scene.enter('defaultmenuScene');
+                ctx.scene.enter('engineScene');
 
                 
             }
