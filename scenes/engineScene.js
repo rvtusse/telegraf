@@ -30,10 +30,10 @@ engineScene.enter((ctx) => {
 
         
     
-        axios.post('https://processor-module.firebaseapp.com/processor/v1/actionRequest' ,startingMenu)
+        axios.post('http://fb2ee247.ngrok.io/processor/v1/actionRequest' ,startingMenu)
         .then((Response) => {
            console.log(Response.data)
-           ctx.reply(Response.data.STRING)
+           //ctx.reply(Response.data.STRING)
         })
 })
 engineScene.hears("Exit", ctx => ctx.reply("Bye " +  ctx.update.message.chat.first_name  + "\nTo go back to main menu press /start"));
