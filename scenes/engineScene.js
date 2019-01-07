@@ -25,6 +25,7 @@ const axios = require('axios')
 
 
 engineScene.enter((ctx) => {
+    console.log('engine ohoh')
     let startingMenu = {
         STRING: '*121#',
         MSIDN: ctx.session.contact_number,
@@ -38,18 +39,36 @@ engineScene.enter((ctx) => {
         .then((Response) => {
             console.log(Response.data)
 
-            //check if there is a value
-            if (Response.data) {
-                parseString(Response.data, (err, result) => {
-                    console.log("Init-==In A Promise-=-=-=");
-                  
-                    console.log(result.ussd.$);
+            var parser = require('fast-xml-parser');
+            var he = require('he');
 
+            var options = {
+                attributeNamePrefix: "",
+                attrNodeName: "ussd", //default is 'false'
+                textNodeName: "#text",
+                ignoreAttributes: false,
+                ignoreNameSpace: false,
+                allowBooleanAttributes: false,
+                parseNodeValue: true,
+                parseAttributeValue: false,
+                trimValues: true,
+                cdataTagName: "__cdata", //default is 'false'
+                cdataPositionChar: "\\c",
+                localeRange: "", //To support non english character in tag/attribute values.
+                parseTrueNumberOnly: false,
+                attrValueProcessor: a => he.decode(a, { isAttributeValue: true }),//default is a=>a
+                tagValueProcessor: a => he.decode(a) //default is a=>a
+            };
 
-
-                });
-
+            if (parser.validate(Response.data) === true) { //optional (it'll return an object in case it's not valid)
+                var jsonObj = parser.parse(Response.data, options);
             }
+
+            // Intermediate obj
+            var tObj = parser.getTraversalObj(Response.data, options);
+            var jsonObj = parser.convertToJson(tObj, options);
+            console.log(jsonObj.ussd.ussd);
+            ctx.reply(jsonObj.ussd.ussd.STRING)
 
 
 
@@ -70,7 +89,7 @@ engineScene.on('message', (ctx) => {
     }
 
 
-    axios.post('https://processor-module.firebaseapp.com/processor/v1/actionRequest', userRequest)
+    axios.post('http://fb2ee247.ngrok.io/processor/processor/v1/actionRequest', userRequest)
         .then((response) => {
             ctx.reply(response.data.STRING)
 
