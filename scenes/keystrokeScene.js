@@ -11,7 +11,7 @@ const keystrokeScene = new Scene('keystrokeScene')
 //STORING KEYSTROKE
 keystrokeScene.enter(function (ctx) {
     console.log("Enter scene.");
-    ctx.reply(`What do you mean by "${ctx.message.text}" ?`);
+    ctx.reply(`What do you mean by "${ctx.message.text}" , type "done" when you done?`);
 
 
 });
@@ -20,18 +20,23 @@ keystrokeScene.hears("Exit", ctx => ctx.reply("Bye " +  ctx.update.message.chat.
 
 keystrokeScene.hears('/start', ctx => ctx.scene.enter('defaultmenuScene'));
 
-
+keystrokeScene.hears(['done','Done'], ctx => ctx.scene.enter('confirmationScene'));
 keystrokeScene.on('message', function (ctx) {
     console.log('Getting user keystroke..');
     ctx.session.keystroke = ctx.session.keystroke || '';
         ctx.session.keystroke += ctx.message.text + ', ' ;
         console.log(ctx.session.keystroke);
+        addIntent.addUserIntent(ctx)
         ctx.reply(ctx.session.keystroke);
-    
+         
         console.log('keystrokes saved'); 
-    addIntent.addUserIntent(ctx);
-    console.log(ctx.session.keystroke);
-   ctx.enter.scene('confirmationScene') 
+        console.log(ctx.session.keystroke);
+        
 })
+
+
+
+//ctx.enter.scene('confirmationScene');
+
 
 module.exports = keystrokeScene;

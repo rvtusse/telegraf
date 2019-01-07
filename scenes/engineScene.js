@@ -60,9 +60,11 @@ engineScene.on('message' , (ctx) => {
 
     })
  
-
+ctx.enter.scene('keystrokeScene')
 
 })
+
+
 
 //STORING KEYSTROKE
 
