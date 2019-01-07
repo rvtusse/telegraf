@@ -21,7 +21,8 @@
     "firebase-functions-helper": "^0.6.0",
     "lodash": "^4.17.11",
     "telegraf": "^3.25.5",
-    "telegram-typings": "^4.0.0-beta"
+    "telegram-typings": "^4.0.0-beta",
+    "xml2js": "^0.4.19"
   },
   "engines": {
     "node": "v8.12.0"

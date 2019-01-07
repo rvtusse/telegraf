@@ -11,6 +11,10 @@
 //     < send keystoke once user is done
 
 
+//TO be removed
+const parseString = require('xml2js').parseString;
+
+
 
 const Scene = require('telegraf/scenes/base')
 const engineScene = new Scene('engineScene')
@@ -22,45 +26,62 @@ const axios = require('axios')
 
 engineScene.enter((ctx) => {
     let startingMenu = {
-        STRING : '*121#',
-        MSIDN : ctx.session.contact_number,
-        PDU : 'PSSRR'
+        STRING: '*121#',
+        MSIDN: ctx.session.contact_number,
+        PDU: 'PSSRR'
 
     }
 
-        
-    
-        axios.post('http://fb2ee247.ngrok.io/processor/v1/actionRequest' ,startingMenu)
+
+
+    axios.post('http://fb2ee247.ngrok.io/processor/v1/actionRequest', startingMenu)
         .then((Response) => {
-           console.log(Response.data)
-           //ctx.reply(Response.data.STRING)
+            console.log(Response.data)
+
+            //check if there is a value
+            if (Response.data) {
+                parseString(Response.data, (err, result) => {
+                    console.log("Init-==In A Promise-=-=-=");
+                  
+                    console.log(result.ussd.$);
+
+
+
+                });
+
+            }
+
+
+
+
+            //ctx.reply(Response.data.STRING)
         })
 })
-engineScene.hears("Exit", ctx => ctx.reply("Bye " +  ctx.update.message.chat.first_name  + "\nTo go back to main menu press /start"));
-engineScene.hears("Back", ctx => ctx.reply("Bye " +  ctx.update.message.chat.first_name  + "\nTo go back to main menu press /start"));
+engineScene.hears("Exit", ctx => ctx.reply("Bye " + ctx.update.message.chat.first_name + "\nTo go back to main menu press /start"));
+engineScene.hears("Back", ctx => ctx.reply("Bye " + ctx.update.message.chat.first_name + "\nTo go back to main menu press /start"));
 engineScene.hears('/start', ctx => ctx.scene.enter('defaultmenuScene'));
 
-engineScene.on('message' , (ctx) => {
+engineScene.on('message', (ctx) => {
     console.log(`user inputed ${ctx.message.chat.text}`)
     let userRequest = {
-        STRING : ctx.message.text,
+        STRING: ctx.message.text,
         MSIDN: ctx.session.contact_number,
         PDU: 'USSRC'
     }
-  
 
-    axios.post('https://processor-module.firebaseapp.com/processor/v1/actionRequest' ,userRequest)
-    .then((response) =>{
-        ctx.reply(response.data.STRING)
-        
-    })
-    .catch(error => {
-        ctx.reply(error)
-        ctx.reply('press start /start')
 
-    })
- 
-ctx.enter.scene('keystrokeScene')
+    axios.post('https://processor-module.firebaseapp.com/processor/v1/actionRequest', userRequest)
+        .then((response) => {
+            ctx.reply(response.data.STRING)
+
+        })
+        .catch(error => {
+            ctx.reply(error)
+            ctx.reply('press start /start')
+
+        })
+
+    ctx.enter.scene('keystrokeScene')
 
 })
 
@@ -74,11 +95,11 @@ ctx.enter.scene('keystrokeScene')
 //         ctx.session.keystroke += ctx.message.text + ', ' ;
 //         console.log(ctx.session.keystroke);
 //         ctx.reply(ctx.session.keystroke);
-    
+
 //         console.log('keystrokes saved'); 
 //     addIntent.addUserIntent(ctx);
 //     console.log(ctx.session.keystroke);
-    
+
 // })
 
 
