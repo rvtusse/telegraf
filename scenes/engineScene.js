@@ -20,6 +20,7 @@ const parseString = require('xml2js').parseString;
 const Scene = require('telegraf/scenes/base')
 const engineScene = new Scene('engineScene')
 const axios = require('axios')
+const addIntent = require('../utils');
 
 
 
@@ -36,7 +37,7 @@ engineScene.enter((ctx) => {
 
 
 
-    axios.post('http://0a2687d7.ngrok.io/processor/v1/actionRequest', startingMenu)
+    axios.post('http://3010d6ea.ngrok.io/processor/v1/actionRequest', startingMenu)
         .then((Response) => {
             console.log(Response.data)
             ctx.reply(Response.data.STRING)
@@ -49,6 +50,23 @@ engineScene.hears('/start', ctx => ctx.scene.enter('defaultmenuScene'));
 
 engineScene.on('message', (ctx) => {
     console.log(`user inputed ${ctx.message.text}`)
+    // ctx.session.intent = ctx.message.text;
+    // ctx.session.keystroke = ctx.session.keystroke || '';
+    // ctx.session.keystroke += ctx.message.text + ', ';
+
+    if(ctx.message.text.length === 1)
+    {
+        ctx.session.keystroke = ctx.session.keystroke || '';
+        ctx.session.keystroke += ctx.message.text + ', ';
+        console.log('keystroke')
+       
+    }else{
+
+        ctx.session.intent = ctx.message.text;
+        console.log('intent')
+    }
+        
+
     let userRequest = {
         STRING: ctx.message.text,
         MSISDN: ctx.session.contact_number,
@@ -57,26 +75,33 @@ engineScene.on('message', (ctx) => {
     console.log("++++++++++++++");
     console.log(userRequest)
 
-    axios.post('http://0a2687d7.ngrok.io/processor/v1/actionRequest', userRequest)
+    axios.post('http://3010d6ea.ngrok.io/processor/v1/actionRequest', userRequest)
         .then((response) => {
             console.log(response.data.STRING);
             console.log(response.data.STRING);
             console.log("RESPOnse ====");
-            
-            ctx.reply(response.data.STRING)
+
+            ctx.reply(response.data.STRING);
+
+            if(response.data.PDU === "PSSRC")
+            {
+                addIntent.addUserIntent(ctx);
+                console.log('intent saved...');
+
+            }
+
 
         })
-        .catch(error => {
-            console.log("RESPOnse ERRRrrrrr ====");
-            ctx.reply(error)
-            ctx.reply('press start /start')
-
-        })
-
-    //ctx.enter.scene('keystrokeScene');
 
 })
+// .catch(error => {
+//     console.log("RESPOnse ERRRrrrrr ====");
+//     ctx.reply(error)
+//     ctx.reply('press start /start')
 
+// })
+
+//ctx.enter.scene('keystrokeScene');
 
 
 //STORING KEYSTROKE

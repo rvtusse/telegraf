@@ -32,7 +32,7 @@ function addUserIntent(ctx) {
 
     let userIntent = {
         msidn: ctx.session.contact_number,
-        intent: `${ctx.session.intent}: [ ${ctx.session.keystroke} ] `,
+        intent: `${ctx.session.intent}: { ${ctx.session.keystroke} } `,
         telegram_id: ctx.update.message.chat.id,
 
         
