@@ -12,6 +12,7 @@
 
 
 //TO be removed
+
 const parseString = require('xml2js').parseString;
 
 
@@ -28,52 +29,18 @@ engineScene.enter((ctx) => {
     console.log('engine ohoh')
     let startingMenu = {
         STRING: '*121#',
-        MSIDN: ctx.session.contact_number,
+        MSISDN: ctx.session.contact_number,
         PDU: 'PSSRR'
 
     }
 
 
 
-    axios.post('http://fb2ee247.ngrok.io/processor/v1/actionRequest', startingMenu)
+    axios.post('http://0a2687d7.ngrok.io/processor/v1/actionRequest', startingMenu)
         .then((Response) => {
             console.log(Response.data)
+            ctx.reply(Response.data.STRING)
 
-            var parser = require('fast-xml-parser');
-            var he = require('he');
-
-            var options = {
-                attributeNamePrefix: "",
-                attrNodeName: "ussd", //default is 'false'
-                textNodeName: "#text",
-                ignoreAttributes: false,
-                ignoreNameSpace: false,
-                allowBooleanAttributes: false,
-                parseNodeValue: true,
-                parseAttributeValue: false,
-                trimValues: true,
-                cdataTagName: "__cdata", //default is 'false'
-                cdataPositionChar: "\\c",
-                localeRange: "", //To support non english character in tag/attribute values.
-                parseTrueNumberOnly: false,
-                attrValueProcessor: a => he.decode(a, { isAttributeValue: true }),//default is a=>a
-                tagValueProcessor: a => he.decode(a) //default is a=>a
-            };
-
-            if (parser.validate(Response.data) === true) { //optional (it'll return an object in case it's not valid)
-                var jsonObj = parser.parse(Response.data, options);
-            }
-
-            // Intermediate obj
-            var tObj = parser.getTraversalObj(Response.data, options);
-            var jsonObj = parser.convertToJson(tObj, options);
-            console.log(jsonObj.ussd.ussd);
-            ctx.reply(jsonObj.ussd.ussd.STRING)
-
-
-
-
-            //ctx.reply(Response.data.STRING)
         })
 })
 engineScene.hears("Exit", ctx => ctx.reply("Bye " + ctx.update.message.chat.first_name + "\nTo go back to main menu press /start"));
@@ -81,26 +48,32 @@ engineScene.hears("Back", ctx => ctx.reply("Bye " + ctx.update.message.chat.firs
 engineScene.hears('/start', ctx => ctx.scene.enter('defaultmenuScene'));
 
 engineScene.on('message', (ctx) => {
-    console.log(`user inputed ${ctx.message.chat.text}`)
+    console.log(`user inputed ${ctx.message.text}`)
     let userRequest = {
         STRING: ctx.message.text,
-        MSIDN: ctx.session.contact_number,
+        MSISDN: ctx.session.contact_number,
         PDU: 'USSRC'
     }
+    console.log("++++++++++++++");
+    console.log(userRequest)
 
-
-    axios.post('http://fb2ee247.ngrok.io/processor/processor/v1/actionRequest', userRequest)
+    axios.post('http://0a2687d7.ngrok.io/processor/v1/actionRequest', userRequest)
         .then((response) => {
+            console.log(response.data.STRING);
+            console.log(response.data.STRING);
+            console.log("RESPOnse ====");
+            
             ctx.reply(response.data.STRING)
 
         })
         .catch(error => {
+            console.log("RESPOnse ERRRrrrrr ====");
             ctx.reply(error)
             ctx.reply('press start /start')
 
         })
 
-    ctx.enter.scene('keystrokeScene')
+    //ctx.enter.scene('keystrokeScene');
 
 })
 
