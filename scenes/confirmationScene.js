@@ -12,7 +12,7 @@ const addIntent = require('../utils');
 
 
 confirmationScene.enter(function (ctx) {
-    ctx.reply( `Your request has been processed.`)
+    ctx.reply( `Your request to '${ctx.session.intent}' has been processed.`)
     ctx.reply('Would you like to do something else?', Markup
         .keyboard([
             ['Yes'],
@@ -28,10 +28,10 @@ confirmationScene.enter(function (ctx) {
 
 
 confirmationScene.hears('No', function(ctx) {
-    ctx.reply("Bye " +  ctx.update.message.chat.first_name + '\nTo go back to main menu press /start')
+    ctx.reply("Bye " +  ctx.update.message.chat.first_name + '\nTo go back to main menu press /menu')
 })
 confirmationScene.hears('Yes', ctx => ctx.scene.enter('defaultmenuScene'));
-
+confirmationScene.hears('/menu', ctx => ctx.scene.enter('defaultmenuScene'));
 
   
 

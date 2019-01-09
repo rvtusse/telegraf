@@ -63,15 +63,14 @@ bot.hears([/hello( there)?/i, /hey( there)?/i, /hi( there)?/i], function (ctx) {
            
         });
         
-        //COMMENTED THE ERROR MESSGAGE BECAUCE IT'S SHOWS UP IN A WRONG PLACE , STILL NEED TO BE SORTED OUT
-        
-
-        // .catch(err => console.log(err))
-        // ctx.reply('Ooops!!, the service is currently down please try again in 5 minutes'+ '\nTo go back to main menu press /start') 
-      
+       
      
        
-}) ;
+}).catch(error => {
+    console.log("RESPOnse ERRRrrrrr ====");
+    ctx.reply(error)
+    ctx.reply('press menu / menu')
+});
 
 
  
@@ -79,13 +78,14 @@ bot.hears([/hello( there)?/i, /hey( there)?/i, /hi( there)?/i], function (ctx) {
  
 
 bot.hears("Get Started!", ctx => ctx.scene.enter("getIntentScene"));
-defaultmenuScene.hears("Exit", ctx => ctx.reply("Bye " +  ctx.update.message.chat.first_name +", see yah.." + "\nTo go back to main menu press /start"));
+defaultmenuScene.hears("Exit", ctx => ctx.reply("Bye " +  ctx.update.message.chat.first_name +", see yah.." + "\nTo go back to main menu press /menu"));
 bot.hears('New Intent', ctx => ctx.scene.enter('getIntentScene'));
 bot.hears('Promos', ctx => ctx.scene.enter('promoScene'));
+bot.hears('/menu', ctx => ctx.scene.enter('defaultmenuScene'));
 bot.hears('Yes', ctx => ctx.scene.enter('getIntentScene'));
 bot.hears('History', ctx => ctx.scene.enter('savedIntentScene'));
 bot.hears('Yes', ctx => ctx.scene.enter('defaultScene'));
-bot.hears("No", ctx => ctx.reply("Bye  " +  ctx.update.message.chat.first_name + '\nTo go back to main menu press /start'));
+bot.hears("No", ctx => ctx.reply("Bye  " +  ctx.update.message.chat.first_name + '\nTo go back to main menu press /menu'));
 
 
 

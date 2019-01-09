@@ -11,9 +11,7 @@
 //     < send keystoke once user is done
 
 
-//TO be removed
 
-const parseString = require('xml2js').parseString;
 
 
 
@@ -32,41 +30,29 @@ engineScene.enter((ctx) => {
         STRING: '*121#',
         MSISDN: ctx.session.contact_number,
         PDU: 'PSSRR'
-
     }
-
-
-
     axios.post('http://3010d6ea.ngrok.io/processor/v1/actionRequest', startingMenu)
         .then((Response) => {
             console.log(Response.data)
             ctx.reply(Response.data.STRING)
-
         })
 })
-engineScene.hears("Exit", ctx => ctx.reply("Bye " + ctx.update.message.chat.first_name + "\nTo go back to main menu press /start"));
-engineScene.hears("Back", ctx => ctx.reply("Bye " + ctx.update.message.chat.first_name + "\nTo go back to main menu press /start"));
-engineScene.hears('/start', ctx => ctx.scene.enter('defaultmenuScene'));
+engineScene.hears("Exit", ctx => ctx.reply("Bye " + ctx.update.message.chat.first_name + "\nTo go back to main menu press /menu"));
+engineScene.hears("Back", ctx => ctx.reply("Bye " + ctx.update.message.chat.first_name + "\nTo go back to main menu press /menu"));
+engineScene.hears('/menu', ctx => ctx.scene.enter('defaultmenuScene'));
 
 engineScene.on('message', (ctx) => {
     console.log(`user inputed ${ctx.message.text}`)
-    // ctx.session.intent = ctx.message.text;
-    // ctx.session.keystroke = ctx.session.keystroke || '';
-    // ctx.session.keystroke += ctx.message.text + ', ';
-
-    if(ctx.message.text.length === 1)
-    {
+    if (ctx.message.text.length === 1) {
         ctx.session.keystroke = ctx.session.keystroke || '';
         ctx.session.keystroke += ctx.message.text + ', ';
         console.log('keystroke')
-       
-    }else{
+
+    } else {
 
         ctx.session.intent = ctx.message.text;
         console.log('intent')
     }
-        
-
     let userRequest = {
         STRING: ctx.message.text,
         MSISDN: ctx.session.contact_number,
@@ -83,42 +69,18 @@ engineScene.on('message', (ctx) => {
 
             ctx.reply(response.data.STRING);
 
-            if(response.data.PDU === "PSSRC")
-            {
+            if (response.data.PDU === "PSSRC") {
                 addIntent.addUserIntent(ctx);
                 console.log('intent saved...');
-
+                ctx.enter.scene('confirmationScene');
             }
-
-
         })
+}).catch(error => {
+    console.log("RESPOnse ERRRrrrrr ====");
+    ctx.reply(error)
+    ctx.reply('press menu / menu')
 
 })
-// .catch(error => {
-//     console.log("RESPOnse ERRRrrrrr ====");
-//     ctx.reply(error)
-//     ctx.reply('press start /start')
-
-// })
-
-//ctx.enter.scene('keystrokeScene');
-
-
-//STORING KEYSTROKE
-
-// bot.on('message', function (ctx) {
-//     console.log('Getting user keystroke..');
-//     ctx.session.keystroke = ctx.session.keystroke || '';
-//         ctx.session.keystroke += ctx.message.text + ', ' ;
-//         console.log(ctx.session.keystroke);
-//         ctx.reply(ctx.session.keystroke);
-
-//         console.log('keystrokes saved'); 
-//     addIntent.addUserIntent(ctx);
-//     console.log(ctx.session.keystroke);
-
-// })
-
 
 
 

@@ -1,22 +1,19 @@
 
-//GET USER INTENT 
-//STORE USER INTENT ON FIRESTORE
+//GET FIRST TIME USER INTENT 
 
 
 const Scene = require('telegraf/scenes/base')
 const Markup = require('telegraf/markup');
-const addIntent = require('../utils');
-const axios = require('axios')
+
 
 
 const getIntentScene = new Scene('getIntentScene')
 getIntentScene.enter(function (ctx) {
-    console.log("Entering the default scene.");
     ctx.reply('What would you like to do ?');
 
 
 });
-getIntentScene.hears('/start', ctx => ctx.scene.enter('defaultmenuScene'));
+getIntentScene.hears('/menu', ctx => ctx.scene.enter('defaultmenuScene'));
 
 getIntentScene.on('message', function (ctx) {
 
@@ -24,14 +21,7 @@ getIntentScene.on('message', function (ctx) {
     ctx.session.chatid = ctx.update.message.chat.id
     ctx.session.intent = ctx.message.text;
     console.log(ctx.session.contact_number)
-
-    //CALLING THE USER INTENT FUNCTION FROM UTILS
-    //addIntent.addUserIntent(ctx);
-
-    //console.log(ctx.session.intent);
-
     ctx.scene.enter('engineScene');
-   
 })
 
 module.exports = getIntentScene;

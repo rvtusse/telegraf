@@ -13,10 +13,14 @@ promoScene.enter((ctx) => {
             ctx.reply(response.data.advert);
         });
 
-    ctx.reply('To go back to main menu press /start')
-//     .catch(err => console.log(err))
-// ctx.reply('Ooops!!, the service is currently down please try again in 5 minutes'+ '\nTo go back to main menu press /start')  
+    ctx.reply('To go back to main menu press /menu')
 
+
+}).catch(error => {
+    console.log("RESPOnse ERRRrrrrr ====");
+    ctx.reply(error)
+    ctx.reply('press menu / menu')
 })
-promoScene.hears('/start', ctx => ctx.scene.enter('defaultmenuScene'));
+
+promoScene.hears('/menu', ctx => ctx.scene.enter('defaultmenuScene'));
 module.exports = promoScene;
