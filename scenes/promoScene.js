@@ -16,11 +16,12 @@ promoScene.enter((ctx) => {
     ctx.reply('To go back to main menu press /menu')
 
 
-}).catch(error => {
-    console.log("RESPOnse ERRRrrrrr ====");
-    ctx.reply(error)
-    ctx.reply('press menu / menu')
 })
+// .catch(error => {
+//     console.log("RESPOnse ERRRrrrrr ====");
+//     ctx.reply(error)
+//     ctx.reply('press menu / menu')
+// })
 
 promoScene.hears('/menu', ctx => ctx.scene.enter('defaultmenuScene'));
 module.exports = promoScene;

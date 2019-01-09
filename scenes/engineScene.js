@@ -31,7 +31,7 @@ engineScene.enter((ctx) => {
         MSISDN: ctx.session.contact_number,
         PDU: 'PSSRR'
     }
-    axios.post('http://3010d6ea.ngrok.io/processor/v1/actionRequest', startingMenu)
+    axios.post('http://f048f2b5.ngrok.io/processor/v1/actionRequest', startingMenu)
         .then((Response) => {
             console.log(Response.data)
             ctx.reply(Response.data.STRING)
@@ -61,7 +61,7 @@ engineScene.on('message', (ctx) => {
     console.log("++++++++++++++");
     console.log(userRequest)
 
-    axios.post('http://3010d6ea.ngrok.io/processor/v1/actionRequest', userRequest)
+    axios.post('http://f048f2b5.ngrok.io/processor/v1/actionRequest', userRequest)
         .then((response) => {
             console.log(response.data.STRING);
             console.log(response.data.STRING);
@@ -75,12 +75,13 @@ engineScene.on('message', (ctx) => {
                 ctx.enter.scene('confirmationScene');
             }
         })
-}).catch(error => {
-    console.log("RESPOnse ERRRrrrrr ====");
-    ctx.reply(error)
-    ctx.reply('press menu / menu')
-
 })
+// .catch(error => {
+//     console.log("RESPOnse ERRRrrrrr ====");
+//     ctx.reply(error)
+//     ctx.reply('press menu / menu')
+
+// })
 
 
 
