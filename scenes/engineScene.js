@@ -31,7 +31,7 @@ engineScene.enter((ctx) => {
         MSISDN: ctx.session.contact_number,
         PDU: 'PSSRR'
     }
-    axios.post('http://f048f2b5.ngrok.io/processor/v1/actionRequest', startingMenu)
+    axios.post('http://a44bccfe.ngrok.io/processor/v1/actionRequest', startingMenu)
         .then((Response) => {
             console.log(Response.data)
             ctx.reply(Response.data.STRING)
@@ -42,17 +42,17 @@ engineScene.hears("Back", ctx => ctx.reply("Bye " + ctx.update.message.chat.firs
 engineScene.hears('/menu', ctx => ctx.scene.enter('defaultmenuScene'));
 
 engineScene.on('message', (ctx) => {
+
+    
+    
+    ctx.session.keystroke = ctx.message.text 
+    ctx.session.keystrokeArr.push(ctx.session.keystroke)
+
+    console.log(ctx.session.keystrokeArr)
+    
+
     console.log(`user inputed ${ctx.message.text}`)
-    if (ctx.message.text.length === 1) {
-        ctx.session.keystroke = ctx.session.keystroke || '';
-        ctx.session.keystroke += ctx.message.text + ', ';
-        console.log('keystroke')
-
-    } else {
-
-        ctx.session.intent = ctx.message.text;
-        console.log('intent')
-    }
+   
     let userRequest = {
         STRING: ctx.message.text,
         MSISDN: ctx.session.contact_number,
@@ -61,36 +61,16 @@ engineScene.on('message', (ctx) => {
     console.log("++++++++++++++");
     console.log(userRequest)
 
-    axios.post('http://f048f2b5.ngrok.io/processor/v1/actionRequest', userRequest)
+    axios.post('http://a44bccfe.ngrok.io/processor/v1/actionRequest', userRequest)
         .then((response) => {
 
-            let menuWASP = response.data.STRING
-            for (var x = 0; x < menuWASP.length; x++){
-
-                if (menuWASP[x].startsWith(ctx.session.keystroke)){
-            
-                    var whatistheusersnumberchoice = ctx.session.keystroke;//
-                    
-                    var whatistheuserstextchoice = menuWASP[x].replace(ctx.session.keystroke, "");//
-                    console.log("User sent us: "+whatistheusersnumberchoice.toString());
-                    console.log("The text is: "+whatistheuserstextchoice);
-                    //var finalPush = {};
-                    //finalPush[ctx.session.keystroke] = whatistheuserstextchoice
-                    
-                }
-            }
-         
- 
-            console.log(menuWASP);
-            console.log(menuWASP);
-            console.log("RESPOnse ====");
 
             ctx.reply(response.data.STRING);
 
             if (response.data.PDU === "PSSRC") {
                 addIntent.addUserIntent(ctx);
                 console.log('intent saved...');
-                ctx.enter.scene('confirmationScene')
+                //ctx.enter.scene('confirmationScene')
             }
         })
 })

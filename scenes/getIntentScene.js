@@ -20,6 +20,10 @@ getIntentScene.on('message', function (ctx) {
     console.log('Getting user intent..');
     ctx.session.chatid = ctx.update.message.chat.id
     ctx.session.intent = ctx.message.text;
+
+    ctx.session.keystrokeArr = []
+    ctx.session.keystrokeArr.push(ctx.session.intent)
+
     console.log(ctx.session.contact_number)
     ctx.scene.enter('engineScene');
 })

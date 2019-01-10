@@ -19,8 +19,6 @@ registerScene.enter(function (ctx) {
 });
 
 
-
-
 registerScene.on("contact", function (ctx) {
     ctx.session.contact_number = ctx.update.message.contact.phone_number;
     ctx.reply("Thank you for registering your number with this Telegram profile!")
