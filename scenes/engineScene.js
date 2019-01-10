@@ -32,28 +32,39 @@ engineScene.enter((ctx) => {
         PDU: 'PSSRR'
     }
     axios.post('http://a44bccfe.ngrok.io/processor/v1/actionRequest', startingMenu)
-        .then((Response) => {
-            console.log(Response.data)
-            // //for (var i = 0; i < menuWASP.length; i++) {
-            //     console.log(menuWASP[i]);
+        .then((response) => {
 
-            //     ctx.session.contact_number = response.data.msidn
-            //     ctx.reply(menuWASP[i]);
-
-            //     console.log(menuWASP[i]);
-
-
-
-            //     console.log(response.data.intents)
-            // }
+            //ctx.session.currMenu = response.data.STRING
+            ctx.reply(ctx.session.currMenu)
+            ctx.session.currMenu = response.data.STRING
+            let waspArrMenu =  response.data.STRING.split('\n')
             
 
-            let waspArrMenu =  Response.data.STRING.split('\n')
-            console.log(waspArrMenu);
+
+            let hasFoundOption = false;
+            for (var i = 0; i < waspArrMenu.length; i++) {
+                
+
+                ctx.session.contact_number = response.data.msidn
+                // console.log("herve")
+                // console.log(waspArrMenu[i]);
+                
+                if(waspArrMenu[i].startsWith(ctx.session.keystroke))
+                {
+                    hasFoundOption = true;
+                    console.log("]]]2344511111mfnnbnbnbnbmvmvmvm=====6666========");
+                    let tempOptionArray = waspArrMenu[i].split(" ");
+                    let keySrokeOpt = ctx.session.keystroke+":"+tempOptionArray[1];
+                    console.log(keySrokeOpt);
 
 
-            ctx.session.currMenu = Response.data.STRING
-            ctx.reply(ctx.session.currMenu)
+                }
+
+            }
+          
+
+
+            
         })
 })
 engineScene.hears("Exit", ctx => ctx.reply("Bye " + ctx.update.message.chat.first_name + "\nTo go back to main menu press /menu"));
@@ -79,7 +90,7 @@ engineScene.on('message', (ctx) => {
     }
     
 
-    
+     
    let userStroke = ctx.session.keystroke = ctx.message.text 
 
    let userAction = ctx.session.keystrokeArr.push(userStroke)
@@ -100,14 +111,41 @@ engineScene.on('message', (ctx) => {
     axios.post('http://a44bccfe.ngrok.io/processor/v1/actionRequest', userRequest)
         .then((response) => {
 
+
             ctx.session.currMenu = response.data.STRING
+            // let waspArrMenu =  response.data.STRING.split('\n')
+            
+
+
+            // let hasFoundOption = false;
+            // for (var i = 0; i < waspArrMenu.length; i++) {
+                
+
+            //     ctx.session.contact_number = response.data.msidn
+            //     // console.log("herve")
+            //     // console.log(waspArrMenu[i]);
+                
+            //     if(waspArrMenu[i].startsWith(ctx.session.keystroke))
+            //     {
+            //         hasFoundOption = true;
+            //         console.log("]]]2344511111mfnnbnbnbnbmvmvmvm=====6666========");
+            //         let tempOptionArray = waspArrMenu[i].split(" ");
+            //         let keySrokeOpt = ctx.session.keystroke+":"+tempOptionArray[1];
+            //         console.log(keySrokeOpt);
+
+
+            //     }
+
+            // }
+
 
             ctx.reply(response.data.STRING);
 
             if (response.data.PDU === "PSSRC") {
                 addIntent.addUserIntent(ctx);
                 console.log('intent saved...');
-                //ctx.enter.scene('confirmationScene')
+                
+
             }
         })
 })
