@@ -63,8 +63,26 @@ engineScene.on('message', (ctx) => {
 
     axios.post('http://f048f2b5.ngrok.io/processor/v1/actionRequest', userRequest)
         .then((response) => {
-            console.log(response.data.STRING);
-            console.log(response.data.STRING);
+
+            let menuWASP = response.data.STRING
+            for (var x = 0; x < menuWASP.length; x++){
+
+                if (menuWASP[x].startsWith(ctx.session.keystroke)){
+            
+                    var whatistheusersnumberchoice = ctx.session.keystroke;//
+                    
+                    var whatistheuserstextchoice = menuWASP[x].replace(ctx.session.keystroke, "");//
+                    console.log("User sent us: "+whatistheusersnumberchoice.toString());
+                    console.log("The text is: "+whatistheuserstextchoice);
+                    //var finalPush = {};
+                    //finalPush[ctx.session.keystroke] = whatistheuserstextchoice
+                    
+                }
+            }
+         
+ 
+            console.log(menuWASP);
+            console.log(menuWASP);
             console.log("RESPOnse ====");
 
             ctx.reply(response.data.STRING);
@@ -72,7 +90,7 @@ engineScene.on('message', (ctx) => {
             if (response.data.PDU === "PSSRC") {
                 addIntent.addUserIntent(ctx);
                 console.log('intent saved...');
-                ctx.enter.scene('confirmationScene');
+                ctx.enter.scene('confirmationScene')
             }
         })
 })
@@ -81,7 +99,25 @@ engineScene.on('message', (ctx) => {
 //     ctx.reply(error)
 //     ctx.reply('press menu / menu')
 
-// })
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
