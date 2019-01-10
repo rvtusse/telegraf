@@ -40,7 +40,7 @@ function addUserIntent(ctx) {
         .then((response) => {
 
             var whatistheusersnumberchoice;
-            var whatistheuserstextchoice;
+              
             
             
             let menuWASP = response.data.STRING
@@ -50,17 +50,19 @@ function addUserIntent(ctx) {
 
                     whatistheusersnumberchoice = ctx.session.keystroke;
                     whatistheuserstextchoice = menuWASP[x].replace(whatistheusersnumberchoice, "");
+
+                    // let userActionvalue = {whatistheusersnumberchoice : whatistheuserstextchoice}
+
                 }
 
             }
 
-             
-            let userIntentAction = ctx.session.keystrokeArr
-            var finalPush = {userIntentAction : whatistheuserstextchoice}
+            
+           
 
             let userIntent = {
                 msidn: ctx.session.contact_number,
-                intent: userIntentAction,finalPush ,
+                intent: ctx.session.keystrokeArr,
                 telegram_id: ctx.update.message.chat.id,
 
 
@@ -68,7 +70,8 @@ function addUserIntent(ctx) {
             /*
             CONSOLE THE USER INPUT / TEXT TYPED ON THE KEYBOARD
             */
-            console.log(userIntent);
+           console.log(userIntent)
+            
             /*
             SEND USER INTENT TO SAVEUSER INTENTS END-POINT 
             */

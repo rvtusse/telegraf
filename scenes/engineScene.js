@@ -34,7 +34,26 @@ engineScene.enter((ctx) => {
     axios.post('http://a44bccfe.ngrok.io/processor/v1/actionRequest', startingMenu)
         .then((Response) => {
             console.log(Response.data)
-            ctx.reply(Response.data.STRING)
+            // //for (var i = 0; i < menuWASP.length; i++) {
+            //     console.log(menuWASP[i]);
+
+            //     ctx.session.contact_number = response.data.msidn
+            //     ctx.reply(menuWASP[i]);
+
+            //     console.log(menuWASP[i]);
+
+
+
+            //     console.log(response.data.intents)
+            // }
+            
+
+            let waspArrMenu =  Response.data.STRING.split('\n')
+            console.log(waspArrMenu);
+
+
+            ctx.session.currMenu = Response.data.STRING
+            ctx.reply(ctx.session.currMenu)
         })
 })
 engineScene.hears("Exit", ctx => ctx.reply("Bye " + ctx.update.message.chat.first_name + "\nTo go back to main menu press /menu"));
@@ -43,13 +62,30 @@ engineScene.hears('/menu', ctx => ctx.scene.enter('defaultmenuScene'));
 
 engineScene.on('message', (ctx) => {
 
-    
-    
-    ctx.session.keystroke = ctx.message.text 
-    ctx.session.keystrokeArr.push(ctx.session.keystroke)
 
-    console.log(ctx.session.keystrokeArr)
+
+    let menuWASP =  ctx.session.currMenu
+    for (var x = 0; x < menuWASP.length; x++) {
+
+        if (menuWASP[x].startsWith(ctx.session.keystroke)) {
+
+            whatistheusersnumberchoice = ctx.session.keystroke;
+            whatistheuserstextchoice = menuWASP[x].replace(whatistheusersnumberchoice, "");
+
+            let userActionvalue = {whatistheusersnumberchoice : whatistheuserstextchoice}
+
+        }
+
+    }
     
+
+    
+   let userStroke = ctx.session.keystroke = ctx.message.text 
+
+   let userAction = ctx.session.keystrokeArr.push(userStroke)
+   
+
+    console.log(userAction)
 
     console.log(`user inputed ${ctx.message.text}`)
    
@@ -64,6 +100,7 @@ engineScene.on('message', (ctx) => {
     axios.post('http://a44bccfe.ngrok.io/processor/v1/actionRequest', userRequest)
         .then((response) => {
 
+            ctx.session.currMenu = response.data.STRING
 
             ctx.reply(response.data.STRING);
 
