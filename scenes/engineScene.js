@@ -32,7 +32,7 @@ engineScene.enter((ctx) => {
         MSISDN: ctx.session.contact_number,
         PDU: 'PSSRR'
     }
-    axios.post('http://ee5a2bfa.ngrok.io/processor/v1/actionRequest', startingMenu)
+    axios.post('http://a44bccfe.ngrok.io/processor/v1/actionRequest', startingMenu)
         .then((response) => {
            //ctx.session.contact_number = response.data.msidn
             ctx.session.currMenu = response.data.STRING
@@ -89,7 +89,9 @@ engineScene.on('message', (ctx) => {
 
 //     }
      
-   let userStroke = ctx.session.keystroke = ctx.message.text 
+   //let userStroke = 
+   ctx.session.keystroke = ctx.session.keystroke || '',
+    userStroke = ctx.session.keystroke += ctx.message.text +',';
 
    let userAction = ctx.session.keystrokeArr.push(userStroke)
    
@@ -106,11 +108,13 @@ engineScene.on('message', (ctx) => {
     console.log("++++++++++++++");
     console.log(userRequest)
 
-    axios.post('http://ee5a2bfa.ngrok.io/processor/v1/actionRequest', userRequest)
+    axios.post('http://a44bccfe.ngrok.io/processor/v1/actionRequest', userRequest)
         .then((response) => {
             
             if(response.data.PDU === 'PSSRC'){
+               
                 ctx.reply(response.data.STRING)
+                addIntent.addUserIntent(ctx);
                 console.log('successfull transaction')
             }
             else{
@@ -135,10 +139,12 @@ engineScene.on('message', (ctx) => {
                     console.log("]]]2344511111mfnnbnbnbnbmvmvmvm=====6666========");
                     console.log(waspArrMenu[i]);
                     let tempOptionArray = waspArrMenu[i].split(" ");
-
-                    ctx.session.intents = ctx.session.keystroke
+                    ctx.session.split =  tempOptionArray[1]
+                    ctx.session.intents = ctx.session.keystroke+":"+tempOptionArray[1];
+                    ctx.session.intent = ctx.session.keystroke
+                    console.log("======WE=======ARE======HERE")
                     console.log(ctx.session.intents);
-
+                    console.log(tempOptionArray[1])
 
                 }
 
@@ -152,13 +158,13 @@ engineScene.on('message', (ctx) => {
             // }
            
                 ctx.reply(response.data.STRING);
-                if (response.data.PDU === "PSSRC") {
+                // if (response.data.PDU === "PSSRC") {
                    
-                    addIntent.addUserIntent(ctx);
-                    console.log('intent saved...');
+                //     addIntent.addUserIntent(ctx);
+                //     console.log('intent saved...');
                     
     
-                }
+                // }
 
 
             }

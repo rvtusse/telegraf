@@ -36,7 +36,7 @@ function addUserIntent(ctx) {
     console.log("++++++++++++++");
     console.log(userRequest)
 
-    axios.post('http://ee5a2bfa.ngrok.io/processor/v1/actionRequest', userRequest)
+    axios.post('http://a44bccfe.ngrok.io/processor/v1/actionRequest', userRequest)
         .then((response) => {
             ctx.session.contact_number = response.data.msidn
             var whatistheusersnumberchoice;
@@ -47,22 +47,29 @@ function addUserIntent(ctx) {
             for (var x = 0; x < menuWASP.length; x++) {
 
                 if (menuWASP[x].startsWith(ctx.session.keystroke)) {
+                    let tempOptionArray = menuWASP[x].split(")");
+                    ctx.session.split = tempOptionArray[1]
+                    ctx.session.textchoice = menuWASP[x].split(")");
                     ctx.session.intents = ctx.session.keystroke+":"+tempOptionArray[1];
                     whatistheusersnumberchoice = ctx.session.keystroke;
                     whatistheuserstextchoice = menuWASP[x].replace(whatistheusersnumberchoice, "");
 
                     // let userActionvalue = {whatistheusersnumberchoice : whatistheuserstextchoice}
-
+                    console.log("====56=====");
+                    console.log(tempOptionArray)
+                    console.log("======WE=======ARE======HERE")
+                    console.log(ctx.session.intents);
+                    console.log(tempOptionArray[1])
                 }
 
             }
 
-            let id = ctx.session.intent;
+            //let id = tempOptionArray;
 
        
             let userIntent = {
                 msidn: ctx.session.contact_number,
-                intent: [id ,ctx.session.intents],
+                intent: [[ctx.session.keystrokeArr+"{"+ ctx.session.split+"}"]] ,
                 telegram_id: ctx.update.message.chat.id,
 
 
