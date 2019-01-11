@@ -52,6 +52,7 @@ bot.hears([/hello( there)?/i, /hey( there)?/i, /hi( there)?/i], function (ctx) {
                 console.log(response.data.msidn)
                 
                  ctx.session.contact_number = response.data.msidn
+                 console.log(ctx.session.contact_number)
                 ctx.scene.enter('defaultmenuScene');
 
                 
@@ -76,13 +77,37 @@ bot.hears([/hello( there)?/i, /hey( there)?/i, /hi( there)?/i], function (ctx) {
 
  
 
+bot.hears('/menu', ctx => {
+
+    ctx.reply("Y'ello! " + ctx.update.message.chat.first_name);
+    axios.get('https://processor-module.firebaseapp.com/processor/v1/userDetails/' + ctx.chat.id)
+        .then(response => {
+            if (response.data.exists === true) {
+                console.log("[+] The user exists, routing to the default menu.");
+                console.log(response.data.msidn)
+                
+                 ctx.session.contact_number = response.data.msidn
+                 console.log(ctx.session.contact_number)
+                ctx.scene.enter('defaultmenuScene');
+
+                
+            }
+            else {
+                console.log(ctx.chat.id)
+                ctx.scene.enter('registerScene');
+            }
+           
+        });
+
+});
+
  
 
 bot.hears("Get Started!", ctx => ctx.scene.enter("getIntentScene"));
 defaultmenuScene.hears("Exit", ctx => ctx.reply("Bye " +  ctx.update.message.chat.first_name +", see yah.." + "\nTo go back to main menu press /menu"));
 bot.hears('New Intent', ctx => ctx.scene.enter('getIntentScene'));
 bot.hears('Promos', ctx => ctx.scene.enter('promoScene'));
-bot.hears('/menu', ctx => ctx.scene.enter('defaultmenuScene'));
+
 bot.hears('Yes', ctx => ctx.scene.enter('getIntentScene'));
 bot.hears('History', ctx => ctx.scene.enter('savedIntentScene'));
 bot.hears('Yes', ctx => ctx.scene.enter('defaultScene'));

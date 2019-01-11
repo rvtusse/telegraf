@@ -21,7 +21,8 @@ const axios = require('axios')
 const addIntent = require('../utils');
 
 
-
+let waspMenu1 = "";
+let isMenuFirstAvailable;
 
 
 engineScene.enter((ctx) => {
@@ -31,41 +32,23 @@ engineScene.enter((ctx) => {
         MSISDN: ctx.session.contact_number,
         PDU: 'PSSRR'
     }
-    axios.post('http://a44bccfe.ngrok.io/processor/v1/actionRequest', startingMenu)
+    axios.post('http://ee5a2bfa.ngrok.io/processor/v1/actionRequest', startingMenu)
         .then((response) => {
-
-            //ctx.session.currMenu = response.data.STRING
-            ctx.reply(ctx.session.currMenu)
+           //ctx.session.contact_number = response.data.msidn
             ctx.session.currMenu = response.data.STRING
-            let waspArrMenu =  response.data.STRING.split('\n')
-            
+            waspMenu1 = response.data.STRING;
+            isMenuAvailable = true;
+            ctx.reply(ctx.session.currMenu)
+            console.log(response.data)
 
-
-            let hasFoundOption = false;
-            for (var i = 0; i < waspArrMenu.length; i++) {
-                
-
-                ctx.session.contact_number = response.data.msidn
-                // console.log("herve")
-                // console.log(waspArrMenu[i]);
-                
-                if(waspArrMenu[i].startsWith(ctx.session.keystroke))
-                {
-                    hasFoundOption = true;
-                    console.log("]]]2344511111mfnnbnbnbnbmvmvmvm=====6666========");
-                    let tempOptionArray = waspArrMenu[i].split(" ");
-                    let keySrokeOpt = ctx.session.keystroke+":"+tempOptionArray[1];
-                    console.log(keySrokeOpt);
-
-
-                }
-
-            }
           
-
+          
+            console.log( ctx.session.contact_number)
 
             
         })
+        
+       
 })
 engineScene.hears("Exit", ctx => ctx.reply("Bye " + ctx.update.message.chat.first_name + "\nTo go back to main menu press /menu"));
 engineScene.hears("Back", ctx => ctx.reply("Bye " + ctx.update.message.chat.first_name + "\nTo go back to main menu press /menu"));
@@ -73,8 +56,8 @@ engineScene.hears('/menu', ctx => ctx.scene.enter('defaultmenuScene'));
 
 engineScene.on('message', (ctx) => {
 
-
-
+    
+    
     let menuWASP =  ctx.session.currMenu
     for (var x = 0; x < menuWASP.length; x++) {
 
@@ -83,13 +66,28 @@ engineScene.on('message', (ctx) => {
             whatistheusersnumberchoice = ctx.session.keystroke;
             whatistheuserstextchoice = menuWASP[x].replace(whatistheusersnumberchoice, "");
 
-            let userActionvalue = {whatistheusersnumberchoice : whatistheuserstextchoice}
+            //let userActionvalue = {whatistheusersnumberchoice : whatistheuserstextchoice}
 
         }
 
     }
     
+//   //ctx.session.currMenu = response.data.STRING
+//    let menuArrWASP =  menuWASP.split('\n')
 
+//    console.log("++++++++========+++++")
+//     console.log(menuWASP);
+
+
+//     for (var i = 0; i <menuArrWASP.length; i++) {
+
+//         console.log(menuArrWASP[i]);
+
+//         //ctx.session.contact_number = response.data.msidn
+
+//         console.log(menuArrWASP[i]);
+
+//     }
      
    let userStroke = ctx.session.keystroke = ctx.message.text 
 
@@ -99,54 +97,77 @@ engineScene.on('message', (ctx) => {
     console.log(userAction)
 
     console.log(`user inputed ${ctx.message.text}`)
-   
+    console.log( ctx.session.contact_number)
     let userRequest = {
-        STRING: ctx.message.text,
+        STRING: ctx.message.text.substring(0,1),
         MSISDN: ctx.session.contact_number,
         PDU: 'USSRC'
     }
     console.log("++++++++++++++");
     console.log(userRequest)
 
-    axios.post('http://a44bccfe.ngrok.io/processor/v1/actionRequest', userRequest)
+    axios.post('http://ee5a2bfa.ngrok.io/processor/v1/actionRequest', userRequest)
         .then((response) => {
-
+            
+            if(response.data.PDU === 'PSSRC'){
+                ctx.reply(response.data.STRING)
+                console.log('successfull transaction')
+            }
+            else{
 
             ctx.session.currMenu = response.data.STRING
-            // let waspArrMenu =  response.data.STRING.split('\n')
+            //ctx.session.contact_number = response.data.msidn
+            let waspArrMenu =  response.data.STRING.split('\n')
+            
             
 
-
-            // let hasFoundOption = false;
-            // for (var i = 0; i < waspArrMenu.length; i++) {
+            let hasFoundOption = false;
+            for (var i = 0; i < waspArrMenu.length; i++) {
                 
 
-            //     ctx.session.contact_number = response.data.msidn
-            //     // console.log("herve")
-            //     // console.log(waspArrMenu[i]);
                 
-            //     if(waspArrMenu[i].startsWith(ctx.session.keystroke))
-            //     {
-            //         hasFoundOption = true;
-            //         console.log("]]]2344511111mfnnbnbnbnbmvmvmvm=====6666========");
-            //         let tempOptionArray = waspArrMenu[i].split(" ");
-            //         let keySrokeOpt = ctx.session.keystroke+":"+tempOptionArray[1];
-            //         console.log(keySrokeOpt);
-
-
-            //     }
-
-            // }
-
-
-            ctx.reply(response.data.STRING);
-
-            if (response.data.PDU === "PSSRC") {
-                addIntent.addUserIntent(ctx);
-                console.log('intent saved...');
+                // console.log("herve")
+                // console.log(waspArrMenu[i]);
                 
+                if(waspArrMenu[i].startsWith(ctx.session.keystroke))
+                {
+                    hasFoundOption = true;
+                    console.log("]]]2344511111mfnnbnbnbnbmvmvmvm=====6666========");
+                    console.log(waspArrMenu[i]);
+                    let tempOptionArray = waspArrMenu[i].split(" ");
+
+                    ctx.session.intents = ctx.session.keystroke
+                    console.log(ctx.session.intents);
+
+
+                }
 
             }
+
+            console.log("Checking the DATA RESP");
+            console.log(response.data);
+            // if(response.data.STRING = 'undefined'){
+            //     ctx.reply('I dont seem to find your option please try again')
+            //     ctx.scene.enter('engineScene');
+            // }
+           
+                ctx.reply(response.data.STRING);
+                if (response.data.PDU === "PSSRC") {
+                   
+                    addIntent.addUserIntent(ctx);
+                    console.log('intent saved...');
+                    
+    
+                }
+
+
+            }
+
+            
+
+            
+
+            
         })
 })
 // .catch(error => {

@@ -36,9 +36,9 @@ function addUserIntent(ctx) {
     console.log("++++++++++++++");
     console.log(userRequest)
 
-    axios.post('http://a44bccfe.ngrok.io/processor/v1/actionRequest', userRequest)
+    axios.post('http://ee5a2bfa.ngrok.io/processor/v1/actionRequest', userRequest)
         .then((response) => {
-
+            ctx.session.contact_number = response.data.msidn
             var whatistheusersnumberchoice;
               
             
@@ -47,7 +47,7 @@ function addUserIntent(ctx) {
             for (var x = 0; x < menuWASP.length; x++) {
 
                 if (menuWASP[x].startsWith(ctx.session.keystroke)) {
-
+                    ctx.session.intents = ctx.session.keystroke+":"+tempOptionArray[1];
                     whatistheusersnumberchoice = ctx.session.keystroke;
                     whatistheuserstextchoice = menuWASP[x].replace(whatistheusersnumberchoice, "");
 
@@ -57,12 +57,12 @@ function addUserIntent(ctx) {
 
             }
 
-            
-           
+            let id = ctx.session.intent;
 
+       
             let userIntent = {
                 msidn: ctx.session.contact_number,
-                intent: ctx.session.keystrokeArr,
+                intent: [id ,ctx.session.intents],
                 telegram_id: ctx.update.message.chat.id,
 
 
